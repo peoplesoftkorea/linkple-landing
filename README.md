@@ -3,6 +3,8 @@
 > **채용부터 복지까지, 사람과 일을 잇다.** 통합 HR 플랫폼 Linkple의 **컨셉 소개 랜딩 페이지**입니다.
 > 코드잇 스프린트 · IT창업가 과정 **스프린트 미션 5**(창업 아이템 랜딩 페이지) 제출물.
 
+**🔗 라이브 데모: https://linkple-landing.vercel.app**
+
 ## 개요
 
 순수 **HTML · CSS · JavaScript**만으로 만든 정적 랜딩 페이지입니다. 기획 → 디자인 → 개발 → 배포의 전체 흐름을 담았습니다.
@@ -41,6 +43,8 @@ linkple-landing/
 ## 배포
 
 Vercel로 배포합니다. (정적 사이트 → 별도 빌드 없이 그대로 배포)
+
+- **배포 주소**: https://linkple-landing.vercel.app
 
 ## 안내
 
