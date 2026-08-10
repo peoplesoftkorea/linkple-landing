@@ -78,6 +78,7 @@ h1, h2, h3 { line-height: 1.25; letter-spacing: -0.02em; font-weight: 700; }
 .brand { display: inline-flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.2rem; }
 .brand__mark { color: var(--brand); display: inline-flex; }
 .brand__name { letter-spacing: -0.03em; }
+.brand__ko { color: var(--brand-ink); font-weight: 700; font-size: .82rem; letter-spacing: -0.02em; align-self: center; }
 .badge { font-size: .68rem; font-weight: 700; padding: 3px 8px; border-radius: 999px; letter-spacing: 0; }
 .badge--soon { background: rgba(18,184,134,.12); color: var(--brand-ink); }
 
