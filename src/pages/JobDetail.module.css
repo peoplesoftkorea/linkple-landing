@@ -1,0 +1,167 @@
+.wrap {
+  padding: var(--space-5) 0 var(--space-8);
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--ink-3);
+}
+
+.back:hover {
+  color: var(--brand-ink);
+}
+
+.head {
+  margin-top: var(--space-4);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.title {
+  margin-top: var(--space-3);
+  font-size: var(--fs-2xl);
+}
+
+.company {
+  margin-top: var(--space-2);
+  color: var(--ink-2);
+}
+
+.company strong {
+  color: var(--ink);
+}
+
+.layout {
+  margin-top: var(--space-5);
+  display: grid;
+  gap: var(--space-5);
+  align-items: start;
+}
+
+.blocks {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.blockTitle {
+  font-size: var(--fs-lg);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--line);
+}
+
+.body {
+  margin-top: var(--space-4);
+  color: var(--ink-2);
+  white-space: pre-wrap;
+  line-height: 1.8;
+}
+
+.list {
+  margin-top: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.list li {
+  position: relative;
+  padding-left: 22px;
+  color: var(--ink-2);
+}
+
+.list li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--brand);
+  font-weight: 700;
+}
+
+.aside {
+  position: sticky;
+  top: calc(var(--header-h) + 16px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font-size: var(--fs-sm);
+}
+
+.rowKey {
+  color: var(--ink-3);
+  flex-shrink: 0;
+}
+
+.rowValue {
+  font-weight: 600;
+  text-align: right;
+}
+
+.salary {
+  font-size: var(--fs-xl);
+  font-weight: 800;
+  color: var(--brand-ink);
+}
+
+.divider {
+  height: 1px;
+  background: var(--line);
+}
+
+.appliedNote {
+  padding: var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--brand-soft);
+  color: var(--brand-ink);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  text-align: center;
+}
+
+.dangerZone {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.confirmActions {
+  margin-top: var(--space-5);
+  display: flex;
+  gap: var(--space-2);
+  justify-content: flex-end;
+}
+
+.skeletonStack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+@media (min-width: 900px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr) 320px;
+  }
+  .title {
+    font-size: var(--fs-3xl);
+  }
+}

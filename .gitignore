@@ -4,3 +4,8 @@ node_modules/
 .playwright-mcp/
 *.log
 .vercel
+
+# build / deps
+node_modules
+dist
+.vercel

@@ -1,0 +1,77 @@
+/* ==========================================================================
+   Linkple 디자인 토큰 — Aurora Green
+   미션5 랜딩 페이지(css/style.css)의 토큰을 그대로 승계해 일관성을 유지한다.
+   ========================================================================== */
+
+:root {
+  /* Color — brand */
+  --brand: #12b886;
+  --brand-2: #0ca678;
+  --brand-ink: #0b7a5c;
+  --brand-soft: #e7f7f1;
+
+  /* Color — neutral */
+  --ink: #0f1b2d;
+  --ink-2: #45566b;
+  --ink-3: #7b8a9c;
+  --bg: #ffffff;
+  --bg-soft: #f3f8f6;
+  --bg-dark: #0f1b2d;
+  --line: #e5ebe8;
+  --white: #ffffff;
+
+  /* Color — status */
+  --danger: #e03131;
+  --danger-soft: #fff0f0;
+  --warning: #f08c00;
+  --info: #1c7ed6;
+
+  --grad: linear-gradient(135deg, #12b886 0%, #0ba59d 100%);
+
+  /* Elevation */
+  --shadow-sm: 0 2px 10px rgba(15, 27, 45, 0.06);
+  --shadow-md: 0 16px 40px rgba(15, 27, 45, 0.1);
+  --shadow-lg: 0 24px 60px rgba(15, 27, 45, 0.18);
+
+  /* Radius */
+  --radius-sm: 10px;
+  --radius: 16px;
+  --radius-lg: 24px;
+  --radius-full: 999px;
+
+  /* Space (4px 배수) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* Type */
+  --font: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+    "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
+  --fs-xs: 0.8rem;
+  --fs-sm: 0.9rem;
+  --fs-md: 1rem;
+  --fs-lg: 1.125rem;
+  --fs-xl: 1.4rem;
+  --fs-2xl: 1.8rem;
+  --fs-3xl: 2.4rem;
+
+  /* Layout */
+  --maxw: 1140px;
+  --maxw-narrow: 720px;
+  --header-h: 64px;
+
+  /* Motion */
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --dur-fast: 0.15s;
+  --dur: 0.25s;
+
+  /* Z-index */
+  --z-header: 100;
+  --z-modal: 200;
+  --z-toast: 300;
+}
