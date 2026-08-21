@@ -12,8 +12,8 @@
 
 | 미션 | 내용 | 라이브 데모 | 코드 |
 |---|---|---|---|
-| **미션 5** | 창업 아이템 랜딩 페이지 — 순수 HTML · CSS · JavaScript | [linkple-landing.vercel.app](https://linkple-landing.vercel.app) | [`feature/mission5`](../../tree/feature/mission5) · [PR #2](../../pull/2) |
-| **미션 6** | 프론트엔드 MVP — React 19 · React Router 7 · Vite | [linkple-mvp.vercel.app](https://linkple-mvp.vercel.app) | [`feature/mission6`](../../tree/feature/mission6) |
+| **미션 5** | 창업 아이템 랜딩 페이지 — 순수 HTML · CSS · JavaScript | [linkple-landing.vercel.app](https://linkple-landing.vercel.app) | [`feature/mission5`](https://github.com/peoplesoftkorea/linkple-landing/tree/feature/mission5) · [PR #2](https://github.com/peoplesoftkorea/linkple-landing/pull/2) |
+| **미션 6** | 프론트엔드 MVP — React 19 · React Router 7 · Vite | [linkple-mvp.vercel.app](https://linkple-mvp.vercel.app) | [`feature/mission6`](https://github.com/peoplesoftkorea/linkple-landing/tree/feature/mission6) |
 
 각 미션의 상세 설명은 **해당 브랜치의 `README.md`** 에 있습니다.
 
