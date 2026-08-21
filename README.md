@@ -7,6 +7,7 @@
 |---|---|
 | 🔗 **라이브 데모** | **https://linkple-mvp.vercel.app** |
 | 🔗 미션 5 정적 랜딩 (디자인 원본) | https://linkple-landing.vercel.app |
+| 📄 기능 명세서 · 유저플로우 | [`docs/spec/`](./docs/spec/) (도식 SVG 원본 포함) |
 
 ---
 
