@@ -18,9 +18,10 @@
 }
 
 .desc {
-  margin-top: var(--space-2);
+  margin-top: var(--space-3);
   color: var(--ink-2);
-  max-width: 62ch;
+  line-height: var(--lh-relaxed);
+  max-width: var(--measure);
 }
 
 .actions {
@@ -32,7 +33,7 @@
 
 @media (min-width: 768px) {
   .wrap {
-    padding: var(--space-7) 0 var(--space-6);
+    padding: var(--space-8) 0 var(--space-7);
   }
   .title {
     font-size: var(--fs-3xl);

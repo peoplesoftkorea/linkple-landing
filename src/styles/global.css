@@ -17,9 +17,15 @@ body {
   font-family: var(--font);
   color: var(--ink);
   background: var(--bg);
-  line-height: 1.65;
+  line-height: var(--lh-base);
   letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
+
+  /* 한글은 기본값(normal)으로 두면 어절 한가운데서 잘린다.
+     "지원하는 일까 / 지," 처럼 끊기면 읽는 흐름이 무너진다.
+     keep-all로 어절을 지키고, 끊을 수 없는 긴 문자열만 예외로 넘긴다. */
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 img,
@@ -50,7 +56,7 @@ h1,
 h2,
 h3,
 h4 {
-  line-height: 1.25;
+  line-height: var(--lh-tight);
   letter-spacing: -0.02em;
   font-weight: 700;
 }

@@ -54,6 +54,7 @@
   margin-top: var(--space-3);
   color: var(--ink-2);
   font-size: var(--fs-sm);
+  line-height: var(--lh-relaxed);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -61,8 +62,8 @@
 }
 
 .bottom {
-  margin-top: var(--space-4);
-  padding-top: var(--space-3);
+  margin-top: var(--space-5);
+  padding-top: var(--space-4);
   border-top: 1px dashed var(--line);
   display: flex;
   align-items: center;

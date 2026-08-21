@@ -24,7 +24,7 @@ const FEATURES = [
   },
   {
     title: "임직원 복지몰",
-    desc: "입사부터 퇴직까지, 총보상(Total Compensation)을 한 곳에서 설계하고 지급합니다.",
+    desc: "입사부터 퇴직까지, 총보상을 한 곳에서 설계하고 지급합니다.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path
@@ -38,7 +38,7 @@ const FEATURES = [
   },
   {
     title: "데이터 통합",
-    desc: "흩어져 있던 채용·인사·복지 데이터를 하나로 모아, 의사결정에 쓰이는 인사이트로 바꿉니다.",
+    desc: "흩어진 채용·인사·복지 데이터를 모아 의사결정에 쓰이는 인사이트로 바꿉니다.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path d="M4 19V5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
@@ -49,7 +49,7 @@ const FEATURES = [
   },
   {
     title: "일하는 방식은 가볍게",
-    desc: "반복 업무는 자동화가 맡고, 사람은 사람에게 집중합니다. HR 담당자의 시간을 돌려드립니다.",
+    desc: "반복 업무는 자동화가 맡고, 사람은 사람에게 집중합니다.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path
@@ -69,19 +69,19 @@ const STEPS = [
     no: "01",
     icon: "🔍",
     title: "탐색한다",
-    desc: "직군·고용 형태·키워드로 좁혀 지금 나에게 맞는 자리를 찾습니다.",
+    desc: "직군·고용 형태·키워드로 좁혀 맞는 자리를 찾습니다.",
   },
   {
     no: "02",
     icon: "📄",
     title: "지원한다",
-    desc: "공고 상세에서 바로 지원서를 씁니다. 입력값은 그 자리에서 검증됩니다.",
+    desc: "공고 상세에서 바로 지원서를 씁니다. 입력값은 즉시 검증됩니다.",
   },
   {
     no: "03",
     icon: "📌",
     title: "관리한다",
-    desc: "지원 내역이 한곳에 쌓입니다. 새로고침해도 사라지지 않습니다.",
+    desc: "지원 내역이 한곳에 쌓입니다. 새로고침해도 남습니다.",
   },
 ];
 
@@ -112,8 +112,8 @@ export default function Home() {
             <span className={styles.grad}>사람과 일을 잇다</span>
           </h1>
           <p className={styles.lead}>
-            구인기업 · 구직자 · 전문 파트너를 하나의 흐름으로 연결합니다. 공고를 올리고, 찾고,
-            지원하는 일까지 <strong>Linkple</strong> 안에서 끝납니다.
+            구인기업 · 구직자 · 전문 파트너를 하나로 잇습니다. 공고를 올리고 찾고 지원하는 일까지,{" "}
+            <strong>Linkple</strong> 안에서 끝납니다.
           </p>
 
           <div className={styles.actions}>
@@ -126,8 +126,7 @@ export default function Home() {
           </div>
 
           <p className={styles.note}>
-            백엔드 없이 브라우저 저장소로 동작하는 학습용 MVP입니다. 데이터는 이 브라우저에만
-            남습니다.
+            학습용 MVP입니다. 입력한 데이터는 이 브라우저에만 남습니다.
           </p>
 
           <dl className={styles.stats}>
@@ -159,8 +158,8 @@ export default function Home() {
             <Card as="article" className={[styles.psCard, styles.psProblem].join(" ")}>
               <h3>흩어진 도구</h3>
               <p>
-                채용 툴 따로, 복지 따로, 데이터 따로. 담당자는 창을 옮겨 다니느라 지치고, 구성원
-                경험은 곳곳에서 끊깁니다.
+                채용 툴 따로, 복지 따로, 데이터 따로. 담당자는 창을 옮겨 다니고, 구성원 경험은
+                곳곳에서 끊깁니다.
               </p>
             </Card>
 
@@ -171,8 +170,8 @@ export default function Home() {
             <Card as="article" className={[styles.psCard, styles.psSolution].join(" ")}>
               <h3>하나의 흐름</h3>
               <p>
-                Linkple은 <strong>채용 → 온보딩 → 복지 → 총보상</strong>까지 한 줄기로 잇습니다.
-                담당자는 덜 일하고, 구성원은 더 좋은 경험을 얻습니다.
+                <strong>채용 → 온보딩 → 복지 → 총보상</strong>까지 한 줄기로 잇습니다. 담당자는 덜
+                일하고, 구성원은 더 좋은 경험을 얻습니다.
               </p>
             </Card>
           </div>
@@ -203,8 +202,8 @@ export default function Home() {
             세 걸음이면 충분합니다
           </h2>
           <p className={styles.sectionDesc}>
-            위 네 가지 기능 중 <strong>채용 매칭</strong>을 먼저 만들었습니다. 아래 흐름은 지금
-            바로 동작합니다.
+            네 가지 중 <strong>채용 매칭</strong>을 먼저 만들었습니다. 아래 흐름은 지금 바로
+            동작합니다.
           </p>
 
           <div className={styles.steps}>
@@ -233,8 +232,7 @@ export default function Home() {
               담당자를 위해
             </h2>
             <p className={styles.impactLead}>
-              성장하는 중소·중견기업과 스타트업의 인사 담당자. 채용도, 온보딩도, 복지도 결국 한
-              사람에게 몰립니다. Linkple은 그 부담을 나눕니다.
+              채용도, 온보딩도, 복지도 결국 한 사람에게 몰립니다. Linkple은 그 부담을 나눕니다.
             </p>
           </div>
 
@@ -266,7 +264,7 @@ export default function Home() {
           <WaitlistForm />
 
           <p className={styles.fineprintCta}>
-            입력한 이메일은 서버로 전송되지 않고 이 브라우저에만 저장됩니다. (학습용 데모)
+            이메일은 전송되지 않고 이 브라우저에만 저장됩니다.
           </p>
 
           <div className={styles.ctaActions}>

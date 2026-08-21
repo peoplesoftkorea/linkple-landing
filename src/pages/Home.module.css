@@ -1,7 +1,7 @@
 .hero {
   position: relative;
   overflow: hidden;
-  padding: var(--space-7) 0 var(--space-8);
+  padding: var(--space-8) 0 var(--space-9);
   background:
     radial-gradient(1000px 420px at 88% -8%, rgba(18, 184, 134, 0.16), transparent 60%),
     var(--bg-soft);
@@ -21,9 +21,9 @@
 }
 
 .title {
-  margin-top: var(--space-4);
+  margin-top: var(--space-5);
   font-size: 2.1rem;
-  line-height: 1.22;
+  line-height: 1.18;
 }
 
 .grad {
@@ -34,14 +34,15 @@
 }
 
 .lead {
-  margin-top: var(--space-4);
+  margin-top: var(--space-5);
   color: var(--ink-2);
   font-size: var(--fs-lg);
-  max-width: 54ch;
+  line-height: var(--lh-relaxed);
+  max-width: var(--measure);
 }
 
 .actions {
-  margin-top: var(--space-5);
+  margin-top: var(--space-6);
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-3);
@@ -54,11 +55,11 @@
 }
 
 .stats {
-  margin-top: var(--space-6);
+  margin-top: var(--space-7);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--space-2);
-  padding: var(--space-4);
+  padding: var(--space-5);
   background: var(--white);
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -85,7 +86,15 @@
 }
 
 .section {
-  padding: var(--space-8) 0 0;
+  /* 섹션 사이에 같은 크기의 호흡을 둔다. 위에만 여백이 있으면
+     앞 섹션에 붙어 읽혀 경계가 흐려진다. 데스크탑에서 한 단계 더 벌린다. */
+  padding: var(--space-8) 0;
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: var(--space-9) 0;
+  }
 }
 
 .sectionTitle {
@@ -94,15 +103,18 @@
 }
 
 .sectionDesc {
-  margin-top: var(--space-3);
+  margin-top: var(--space-4);
   text-align: center;
   color: var(--ink-2);
+  max-width: var(--measure);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .steps {
-  margin-top: var(--space-6);
+  margin-top: var(--space-7);
   display: grid;
-  gap: var(--space-4);
+  gap: var(--space-5);
 }
 
 .step {
@@ -136,14 +148,15 @@
 }
 
 .stepDesc {
-  margin-top: var(--space-2);
+  margin-top: var(--space-3);
   color: var(--ink-2);
   font-size: var(--fs-sm);
+  line-height: var(--lh-relaxed);
 }
 
 .cta {
-  margin: var(--space-8) 0 0;
-  padding: var(--space-7) var(--space-5);
+  margin: var(--space-8) 0 var(--space-6);
+  padding: var(--space-9) var(--space-5);
   border-radius: var(--radius-lg);
   background: var(--grad);
   color: #fff;
@@ -155,8 +168,11 @@
 }
 
 .ctaDesc {
-  margin-top: var(--space-3);
+  margin-top: var(--space-4);
   color: rgba(255, 255, 255, 0.9);
+  max-width: var(--measure);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .ctaActions {
@@ -187,9 +203,9 @@
 }
 
 .psGrid {
-  margin-top: var(--space-5);
+  margin-top: var(--space-6);
   display: grid;
-  gap: var(--space-4);
+  gap: var(--space-5);
   align-items: center;
 }
 
@@ -200,6 +216,7 @@
 .psCard p {
   margin-top: var(--space-3);
   color: var(--ink-2);
+  line-height: var(--lh-relaxed);
 }
 
 .psProblem {
@@ -220,9 +237,9 @@
 
 /* ---------- 핵심 기능 4종 ---------- */
 .featureGrid {
-  margin-top: var(--space-6);
+  margin-top: var(--space-7);
   display: grid;
-  gap: var(--space-4);
+  gap: var(--space-5);
 }
 
 .featureIcon {
@@ -246,18 +263,19 @@
 }
 
 .featureDesc {
-  margin-top: var(--space-2);
+  margin-top: var(--space-3);
   color: var(--ink-2);
   font-size: var(--fs-sm);
+  line-height: var(--lh-relaxed);
 }
 
 /* ---------- 기대효과 / 타깃 ---------- */
 .impact {
   margin-top: var(--space-8);
   display: grid;
-  gap: var(--space-5);
+  gap: var(--space-6);
   align-items: center;
-  padding: var(--space-6);
+  padding: var(--space-7) var(--space-6);
   border-radius: var(--radius-lg);
   background: var(--bg-soft);
 }
@@ -268,8 +286,10 @@
 }
 
 .impactLead {
-  margin-top: var(--space-3);
+  margin-top: var(--space-4);
   color: var(--ink-2);
+  line-height: var(--lh-relaxed);
+  max-width: var(--measure-narrow);
 }
 
 .statList {
@@ -281,7 +301,7 @@
   display: flex;
   align-items: baseline;
   gap: var(--space-3);
-  padding: var(--space-4);
+  padding: var(--space-5);
   background: var(--white);
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
@@ -305,18 +325,15 @@
   .psArrow {
     transform: none;
   }
+  /* 기능 카드는 2열까지만 늘린다.
+     4열로 벌리면 카드 폭이 좁아져 설명이 줄당 15자로 잘리고,
+     같은 문장이 서너 줄로 쌓여 답답해진다. (멘토 피드백 2026-08-21) */
   .featureGrid {
     grid-template-columns: repeat(2, 1fr);
   }
   .impact {
     grid-template-columns: 1fr 1fr;
-    padding: var(--space-7);
-  }
-}
-
-@media (min-width: 1024px) {
-  .featureGrid {
-    grid-template-columns: repeat(4, 1fr);
+    padding: var(--space-8) var(--space-7);
   }
 }
 

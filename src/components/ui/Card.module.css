@@ -9,6 +9,12 @@
   padding: var(--space-5);
 }
 
+@media (min-width: 768px) {
+  .padded {
+    padding: 28px;
+  }
+}
+
 .interactive {
   transition:
     transform var(--dur) var(--ease),
