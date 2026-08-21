@@ -3,8 +3,10 @@
 > **채용부터 복지까지, 사람과 일을 잇다.** 통합 HR 플랫폼 Linkple의 **프론트엔드 MVP**입니다.
 > 코드잇 스프린트 · IT창업가 과정 **스프린트 미션 6**(프론트엔드 MVP 구현) 제출물.
 
-**🔗 라이브 데모: https://linkple-mvp.vercel.app**
-**🔗 미션 5 정적 랜딩(디자인 원본): https://linkple-landing.vercel.app**
+| | |
+|---|---|
+| 🔗 **라이브 데모** | **https://linkple-mvp.vercel.app** |
+| 🔗 미션 5 정적 랜딩 (디자인 원본) | https://linkple-landing.vercel.app |
 
 ---
 
@@ -14,7 +16,16 @@
 **React 기반 MVP**로 옮겼습니다. 보여주기 위한 화면에서 멈추지 않고, 공고를 올리고 찾고
 지원하는 일이 실제로 **동작하고 저장되는** 수준까지 구현했습니다.
 
-백엔드는 쓰지 않습니다. 데이터는 **localStorage**에 남고, 새로고침해도 사라지지 않습니다.
+미션 5의 랜딩은 버리지 않고 홈 화면으로 **그대로 승계**했습니다.
+
+| 미션 5 (정적 HTML) | 미션 6 (React) |
+|---|---|
+| Hero · CTA | `Home` 히어로 + **실시간 지표**(등록 공고·참여 기업·내 지원) |
+| 문제 → 해결 섹션 | 동일 문구를 `Card` 컴포넌트로 재구성 |
+| 핵심 기능 4종 (SVG 아이콘) | 아이콘·문구 그대로 이식 |
+| 기대효과 · 타깃 | 동일 |
+| 출시 알림 폼 *(화면만 있고 아무것도 저장되지 않던 폼)* | **동작하는 폼** — 검증 · localStorage 저장 · 재방문 시 신청 상태 유지 · 취소 |
+| Aurora Green 컬러/타이포 | `tokens.css`로 승계 후 전 화면 공유 |
 
 ---
 
@@ -31,7 +42,7 @@
 
 ```
 홈 → 공고 탐색 → 공고 상세 → (비로그인이면) 로그인 → 지원서 작성 → 접수 완료 → 내 지원 내역
-                      ↘ 공고 등록(로그인 필요) → 등록한 공고 상세
+                      ↘ 공고 등록(로그인 필요) → 등록한 공고 상세 → 삭제
 ```
 
 로그인이 필요한 화면에 비로그인 상태로 들어가면 로그인 페이지로 보내고,
@@ -43,7 +54,7 @@
 
 | 경로 | 화면 | 보호 |
 |---|---|---|
-| `/` | 홈 (히어로 · 흐름 소개 · 실시간 지표) | — |
+| `/` | 홈 (랜딩 승계 + 실시간 지표 + 출시 알림 폼) | — |
 | `/jobs` | 공고 목록 (검색·필터·정렬) | — |
 | `/jobs/:jobId` | 공고 상세 (+ 지원 모달 · 삭제 확인 모달) | — |
 | `/jobs/new` | 공고 등록 폼 | 🔒 로그인 |
@@ -60,7 +71,7 @@
 - **React Router 7** — SPA 라우팅, 중첩 라우트, 보호 라우트, URL 쿼리 동기화
 - **Vite 6** — 개발 서버 · 번들링
 - **CSS Modules + CSS 변수** — 미션 5의 Aurora Green 토큰을 그대로 승계
-- **localStorage** — 백엔드 대체 영속 계층
+- **JSON Server** — 선택적 Mock API (아래 참고)
 
 상태 관리는 **`useState` · `useReducer` · `useMemo` · `useCallback` + Context** 만 사용했습니다.
 외부 상태 관리 라이브러리는 쓰지 않았습니다.
@@ -68,8 +79,25 @@
 | Context | 역할 |
 |---|---|
 | `AuthProvider` | 로그인 상태 시뮬레이션 · 세션 영속 |
-| `JobsProvider` | 공고·지원 데이터 (`useReducer`) · 저장소 동기화 · 로딩/에러 상태 |
+| `JobsProvider` | 공고·지원 데이터 (`useReducer`) · 로딩/에러 상태 |
 | `ToastProvider` | 결과 알림 (자동 소멸) |
+
+---
+
+## 데이터 계층 — localStorage와 Mock API 겸용
+
+화면은 데이터가 어디서 오는지 모릅니다. `src/data/repository.js` 한 곳만 알고 있습니다.
+
+| 모드 | 조건 | 동작 |
+|---|---|---|
+| **localStorage** (기본값) | `VITE_API_BASE_URL` 없음 | 첫 방문 시 Mock 데이터 10건을 심고, 이후 브라우저 저장소를 읽고 씁니다. **배포본이 이 모드**라 서버 없이 그대로 동작합니다. |
+| **Mock API** | `VITE_API_BASE_URL` 설정 | JSON Server(`db.json`)를 실제 REST API처럼 호출합니다. |
+
+두 구현이 같은 인터페이스(`loadAll` · `createJob` · `deleteJob` · `createApplication` · `deleteApplication`)를
+따르므로, **미션 7에서 실제 API로 갈아탈 때 바꿀 곳은 이 파일 하나**입니다.
+
+Mock API 모드는 서버가 꺼져 있으면 **에러 화면과 다시 시도 버튼**을 띄웁니다.
+`useEffect` 안에서 조용히 실패하지 않게 하려고 만든 경로입니다.
 
 ---
 
@@ -91,7 +119,7 @@
 
 - **로딩** — 카드와 같은 골격의 스켈레톤 6장 (화면이 튀지 않음)
 - **빈 화면** — "등록된 공고 없음"과 "조건에 맞는 공고 없음"을 구분해 다른 행동을 제안
-- **에러** — 저장소를 쓸 수 없을 때 사유와 **다시 시도** 버튼 제시
+- **에러** — 저장소·API 실패 시 사유와 **다시 시도** 버튼 제시
 - **검증** — 필드별 메시지 + 제출 시 오류 요약(포커스 이동)
 
 ### 접근성
@@ -105,19 +133,25 @@
 ## 폴더 구조
 
 ```
-src/
-├── main.jsx                  # 진입점 · Provider 조립
-├── App.jsx                   # 라우트 정의
-├── styles/                   # tokens.css · global.css
-├── data/                     # constants.js · seedJobs.js (Mock 데이터 10건)
-├── lib/                      # storage.js · validate.js · format.js · id.js
-├── contexts/                 # Auth · Jobs · Toast (Provider + Context 분리)
-├── hooks/                    # useAuth · useJobs · useToast
-├── components/
-│   ├── ui/                   # 디자인 시스템 (Button · Field · Card · Modal · …)
-│   ├── layout/               # Layout · Header · Footer · ProtectedRoute · …
-│   └── job/                  # JobCard · JobFilters · ApplyModal
-└── pages/                    # Home · Jobs · JobDetail · JobNew · Applications · ApplyDone · Login · NotFound
+├── db.json                   # JSON Server용 Mock DB (공고 10건)
+├── .env.example              # Mock API 모드 설정 예시
+└── src/
+    ├── main.jsx              # 진입점 · Provider 조립
+    ├── App.jsx               # 라우트 정의
+    ├── styles/               # tokens.css · global.css
+    ├── data/
+    │   ├── repository.js     # ★ 데이터 접근 계층 (localStorage ↔ Mock API)
+    │   ├── seedJobs.js       # Mock 데이터 10건
+    │   └── constants.js
+    ├── lib/                  # storage.js · validate.js · format.js · id.js
+    ├── contexts/             # Auth · Jobs · Toast (Provider + Context 분리)
+    ├── hooks/                # useAuth · useJobs · useToast
+    ├── components/
+    │   ├── ui/               # 디자인 시스템 (Button · Field · Card · Modal · …)
+    │   ├── layout/           # Layout · Header · Footer · ProtectedRoute · …
+    │   ├── home/             # WaitlistForm
+    │   └── job/              # JobCard · JobFilters · ApplyModal
+    └── pages/                # Home · Jobs · JobDetail · JobNew · Applications · ApplyDone · Login · NotFound
 ```
 
 ---
@@ -126,11 +160,21 @@ src/
 
 ```bash
 npm install
-npm run dev      # http://localhost:5173
+npm run dev      # http://localhost:5173  (localStorage 모드)
 npm run build    # 프로덕션 빌드
 npm run preview  # 빌드 결과 확인
 npm run lint     # ESLint
 ```
+
+### Mock API 모드로 켜기
+
+```bash
+cp .env.example .env.local   # VITE_API_BASE_URL=http://localhost:3001
+npm run server               # 터미널 A — JSON Server (db.json)
+npm run dev                  # 터미널 B — 앱
+```
+
+`.env.local`을 지우면 다시 localStorage 모드로 돌아갑니다.
 
 ### 데모 계정
 
@@ -149,10 +193,10 @@ npm run lint     # ESLint
 | 항목 | 구현 |
 |---|---|
 | 핵심 기능 2~4개 선정 | 4개 (탐색 · 등록 · 지원 · 지원 관리) |
-| 정적 디자인 → React 컴포넌트 | 미션 5 마크업/토큰을 컴포넌트 계층으로 재구성 |
+| 정적 디자인 → React 컴포넌트 | 미션 5의 5개 섹션 전부 승계 + 컴포넌트 계층으로 재구성 |
 | 재사용 컴포넌트 설계 | `components/ui` 11종 |
 | React Router 화면 이동 | 8개 라우트 · 중첩 라우트 · 보호 라우트 |
-| 상태 관리 · 상호작용 | `useState`/`useReducer`/Context, 필터·정렬·모달·토글·토스트 |
+| 상태 관리 · 상호작용 | `useState`/`useReducer`/Context, 필터·정렬·모달 3종·토글·토스트 |
 | 로컬 스토리지 / Mock 데이터 | 시드 10건 + 사용자 등록분, 새로고침 후 유지 |
 
 **심화 요구사항**
@@ -162,6 +206,7 @@ npm run lint     # ESLint
 | 간단한 인증 흐름 | localStorage 기반 로그인/로그아웃 · 보호 라우트 · 로그인 후 원래 화면 복귀 |
 | UX 개선 | 로딩 스켈레톤 · 빈 화면 2종 · 에러 + 재시도 · 폼 검증 · 토스트 |
 | 디자인 시스템 | 토큰 + 재사용 UI 컴포넌트로 전 화면 통일 |
+| Mock Server *(선택)* | JSON Server + `repository.js` 전환 계층 |
 
 ---
 

@@ -4,9 +4,9 @@ import Button from "../ui/Button";
 import Field from "../ui/Field";
 import { Input, Textarea } from "../ui/Input";
 import { hasErrors, validateApplyForm } from "../../lib/validate";
+import styles from "./ApplyModal.module.css";
 
 const MESSAGE_MAX = 500;
-const FAKE_LATENCY_MS = 700;
 
 /**
  * 지원서 모달.
@@ -22,6 +22,7 @@ export default function ApplyModal({ open, job, defaults, onClose, onSubmit }) {
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const setField = (key) => (event) => {
     const next = { ...values, [key]: event.target.value };
@@ -43,10 +44,14 @@ export default function ApplyModal({ open, job, defaults, onClose, onSubmit }) {
     if (hasErrors(nextErrors)) return;
 
     setSubmitting(true);
-    // 제출 지연을 흉내 내 버튼의 로딩 상태가 실제로 보이게 한다.
-    await new Promise((resolve) => setTimeout(resolve, FAKE_LATENCY_MS));
-    setSubmitting(false);
-    onSubmit(values);
+    setSubmitError("");
+    try {
+      // 저장이 끝날 때까지 버튼은 로딩 상태를 유지한다.
+      await onSubmit(values);
+    } catch (error) {
+      setSubmitError(error.message);
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -58,6 +63,13 @@ export default function ApplyModal({ open, job, defaults, onClose, onSubmit }) {
       labelledBy="apply-modal-title"
     >
       <form onSubmit={handleSubmit} noValidate style={{ display: "grid", gap: 20 }}>
+        {submitError && (
+          <p className={styles.alert} role="alert">
+            <span aria-hidden="true">⚠</span>
+            {submitError}
+          </p>
+        )}
+
         <Field id="apply-name" label="이름" required error={errors.name}>
           {({ id, errorId, invalid }) => (
             <Input

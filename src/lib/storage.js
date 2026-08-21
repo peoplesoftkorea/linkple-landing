@@ -11,6 +11,7 @@ export const STORAGE_KEYS = {
   jobs: `${PREFIX}.jobs.v1`,
   applications: `${PREFIX}.applications.v1`,
   auth: `${PREFIX}.auth.v1`,
+  waitlist: `${PREFIX}.waitlist.v1`,
 };
 
 export function readStorage(key, fallback) {
@@ -37,5 +38,17 @@ export function removeStorage(key) {
     window.localStorage.removeItem(key);
   } catch {
     /* 지울 수 없어도 흐름은 계속 진행한다 */
+  }
+}
+
+/** 저장소를 실제로 쓸 수 있는지 확인한다. (시크릿 모드·정책 차단 대비) */
+export function isStorageAvailable() {
+  try {
+    const probe = `${PREFIX}.__probe__`;
+    window.localStorage.setItem(probe, "1");
+    window.localStorage.removeItem(probe);
+    return true;
+  } catch {
+    return false;
   }
 }

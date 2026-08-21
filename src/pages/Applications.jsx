@@ -18,6 +18,7 @@ export default function Applications() {
   const { user } = useAuth();
   const { push } = useToast();
   const [target, setTarget] = useState(null);
+  const [withdrawing, setWithdrawing] = useState(false);
 
   const mine = useMemo(
     () =>
@@ -27,10 +28,17 @@ export default function Applications() {
     [applications, user.email],
   );
 
-  const handleWithdraw = () => {
-    withdrawApplication(target.id);
-    setTarget(null);
-    push("지원을 철회했습니다.", "info");
+  const handleWithdraw = async () => {
+    setWithdrawing(true);
+    try {
+      await withdrawApplication(target.id);
+      setTarget(null);
+      push("지원을 철회했습니다.", "info");
+    } catch (error) {
+      push(error.message, "error");
+    } finally {
+      setWithdrawing(false);
+    }
   };
 
   return (
@@ -96,7 +104,7 @@ export default function Applications() {
           <Button variant="ghost" onClick={() => setTarget(null)}>
             그대로 두기
           </Button>
-          <Button variant="danger" onClick={handleWithdraw}>
+          <Button variant="danger" onClick={handleWithdraw} loading={withdrawing}>
             철회합니다
           </Button>
         </div>

@@ -22,6 +22,7 @@ export default function JobDetail() {
 
   const [applyOpen, setApplyOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   if (status === "loading") {
     return (
@@ -77,18 +78,26 @@ export default function JobDetail() {
     setApplyOpen(true);
   };
 
-  const handleApplySubmit = (values) => {
-    const application = addApplication(job, values, user);
+  // 저장에 실패하면 모달을 닫지 않는다. 실패를 성공처럼 보이게 하지 않기 위해서다.
+  const handleApplySubmit = async (values) => {
+    const application = await addApplication(job, values, user);
     setApplyOpen(false);
     push("지원서를 제출했습니다.", "success");
     navigate(`/applications/${application.id}/done`, { replace: true });
   };
 
-  const handleDelete = () => {
-    removeJob(job.id);
-    setConfirmOpen(false);
-    push("공고를 삭제했습니다.", "info");
-    navigate("/jobs", { replace: true });
+  const handleDelete = async () => {
+    setDeleting(true);
+    try {
+      await removeJob(job.id);
+      setConfirmOpen(false);
+      push("공고를 삭제했습니다.", "info");
+      navigate("/jobs", { replace: true });
+    } catch (error) {
+      push(error.message, "error");
+    } finally {
+      setDeleting(false);
+    }
   };
 
   return (
@@ -211,7 +220,7 @@ export default function JobDetail() {
           <Button variant="ghost" onClick={() => setConfirmOpen(false)}>
             취소
           </Button>
-          <Button variant="danger" onClick={handleDelete}>
+          <Button variant="danger" onClick={handleDelete} loading={deleting}>
             삭제합니다
           </Button>
         </div>

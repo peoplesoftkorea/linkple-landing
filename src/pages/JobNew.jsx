@@ -36,6 +36,7 @@ export default function JobNew() {
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const setField = (key) => (event) => {
     const next = { ...values, [key]: event.target.value };
@@ -61,11 +62,15 @@ export default function JobNew() {
     }
 
     setSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 600));
-    const job = addJob(values, user);
-    setSubmitting(false);
-    push("공고를 등록했습니다.", "success");
-    navigate(`/jobs/${job.id}`, { replace: true });
+    try {
+      const job = await addJob(values, user);
+      push("공고를 등록했습니다.", "success");
+      navigate(`/jobs/${job.id}`, { replace: true });
+    } catch (error) {
+      setSubmitError(error.message);
+      setSubmitting(false);
+      requestAnimationFrame(() => summaryRef.current?.focus());
+    }
   };
 
   const errorList = Object.entries(errors);
@@ -81,7 +86,17 @@ export default function JobNew() {
       <Container narrow className={styles.wrap}>
         <Card>
           <form className={styles.form} onSubmit={handleSubmit} noValidate>
-            {errorList.length > 0 && (
+            {submitError && (
+              <div className={styles.summary} ref={summaryRef} tabIndex={-1} role="alert">
+                <span aria-hidden="true">⚠</span>
+                <div>
+                  <strong>저장하지 못했습니다.</strong>
+                  <p>{submitError}</p>
+                </div>
+              </div>
+            )}
+
+            {errorList.length > 0 && !submitError && (
               <div className={styles.summary} ref={summaryRef} tabIndex={-1} role="alert">
                 <span aria-hidden="true">⚠</span>
                 <div>

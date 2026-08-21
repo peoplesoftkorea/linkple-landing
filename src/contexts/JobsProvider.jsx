@@ -1,10 +1,7 @@
 import { useCallback, useEffect, useMemo, useReducer } from "react";
 import { JobsContext } from "./JobsContext";
-import { SEED_JOBS } from "../data/seedJobs";
-import { STORAGE_KEYS, readStorage, writeStorage } from "../lib/storage";
+import { dataSource, repository } from "../data/repository";
 import { createId } from "../lib/id";
-
-const FAKE_LATENCY_MS = 450;
 
 const initialState = {
   status: "loading", // loading | ready | error
@@ -54,65 +51,31 @@ function reducer(state, action) {
   }
 }
 
+/**
+ * 공고·지원 데이터를 한곳에서 들고 있는 저장고.
+ * 읽고 쓰는 일은 repository에 맡기고, 여기서는 화면에 보일 상태만 관리한다.
+ */
 export default function JobsProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  // 저장소에서 읽어 온다. 비어 있으면 Mock 데이터를 심는다.
-  // 에러 화면을 실제로 검증할 수 있도록, 실패 시 다시 시도할 수 있게 분리했다.
-  const load = useCallback(() => {
+  const load = useCallback(async () => {
     dispatch({ type: "hydrate/start" });
-
-    return new Promise((resolve) => {
-      // 네트워크 지연을 흉내 내 로딩(스켈레톤) 상태가 실제로 보이게 한다.
-      setTimeout(() => {
-        if (!isStorageAvailable()) {
-          dispatch({
-            type: "hydrate/error",
-            error:
-              "브라우저 저장소를 사용할 수 없습니다. 시크릿 모드이거나 저장소가 차단된 상태일 수 있습니다.",
-          });
-          resolve(false);
-          return;
-        }
-
-        const storedJobs = readStorage(STORAGE_KEYS.jobs, null);
-        const storedApps = readStorage(STORAGE_KEYS.applications, null);
-
-        if (!Array.isArray(storedJobs)) {
-          // 첫 방문이거나 저장값이 깨진 경우 — 시드로 되돌린다.
-          writeStorage(STORAGE_KEYS.jobs, SEED_JOBS);
-          dispatch({ type: "hydrate/success", jobs: SEED_JOBS, applications: [] });
-          resolve(true);
-          return;
-        }
-
-        dispatch({
-          type: "hydrate/success",
-          jobs: storedJobs,
-          applications: Array.isArray(storedApps) ? storedApps : [],
-        });
-        resolve(true);
-      }, FAKE_LATENCY_MS);
-    });
+    try {
+      const { jobs, applications } = await repository.loadAll();
+      dispatch({ type: "hydrate/success", jobs, applications });
+      return true;
+    } catch (error) {
+      dispatch({ type: "hydrate/error", error: error.message });
+      return false;
+    }
   }, []);
 
   useEffect(() => {
     load();
   }, [load]);
 
-  // ready 이후의 변경만 저장한다. (loading 단계에서 빈 배열로 덮어쓰지 않도록)
-  useEffect(() => {
-    if (state.status !== "ready") return;
-    writeStorage(STORAGE_KEYS.jobs, state.jobs);
-  }, [state.status, state.jobs]);
-
-  useEffect(() => {
-    if (state.status !== "ready") return;
-    writeStorage(STORAGE_KEYS.applications, state.applications);
-  }, [state.status, state.applications]);
-
-  const addJob = useCallback((values, author) => {
-    const job = {
+  const addJob = useCallback(async (values, author) => {
+    const job = await repository.createJob({
       id: createId("job"),
       title: values.title.trim(),
       company: values.company.trim(),
@@ -126,17 +89,18 @@ export default function JobsProvider({ children }) {
       createdAt: new Date().toISOString(),
       source: "user",
       createdBy: author?.email ?? null,
-    };
+    });
     dispatch({ type: "job/add", job });
     return job;
   }, []);
 
-  const removeJob = useCallback((id) => {
+  const removeJob = useCallback(async (id) => {
+    await repository.deleteJob(id);
     dispatch({ type: "job/remove", id });
   }, []);
 
-  const addApplication = useCallback((job, values, applicant) => {
-    const application = {
+  const addApplication = useCallback(async (job, values, applicant) => {
+    const application = await repository.createApplication({
       id: createId("app"),
       jobId: job.id,
       jobTitle: job.title,
@@ -148,12 +112,13 @@ export default function JobsProvider({ children }) {
       applicantEmail: applicant?.email ?? values.email.trim(),
       status: "접수 완료",
       createdAt: new Date().toISOString(),
-    };
+    });
     dispatch({ type: "application/add", application });
     return application;
   }, []);
 
-  const withdrawApplication = useCallback((id) => {
+  const withdrawApplication = useCallback(async (id) => {
+    await repository.deleteApplication(id);
     dispatch({ type: "application/withdraw", id });
   }, []);
 
@@ -176,6 +141,7 @@ export default function JobsProvider({ children }) {
   const value = useMemo(
     () => ({
       ...state,
+      dataSource,
       retry: load,
       addJob,
       removeJob,
@@ -199,18 +165,6 @@ export default function JobsProvider({ children }) {
   );
 
   return <JobsContext.Provider value={value}>{children}</JobsContext.Provider>;
-}
-
-/** 저장소를 실제로 쓸 수 있는지 확인한다. (시크릿 모드·정책 차단 대비) */
-function isStorageAvailable() {
-  try {
-    const probe = "linkple.__probe__";
-    window.localStorage.setItem(probe, "1");
-    window.localStorage.removeItem(probe);
-    return true;
-  } catch {
-    return false;
-  }
 }
 
 /** 줄바꿈으로 입력받은 목록형 필드를 배열로 바꾼다. */

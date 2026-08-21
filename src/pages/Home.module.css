@@ -175,3 +175,153 @@
     grid-template-columns: repeat(3, 1fr);
   }
 }
+
+/* ---------- 문제 → 해결 (미션5 랜딩 섹션 이식) ---------- */
+.eyebrowCenter {
+  text-align: center;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--brand-ink);
+}
+
+.psGrid {
+  margin-top: var(--space-5);
+  display: grid;
+  gap: var(--space-4);
+  align-items: center;
+}
+
+.psCard h3 {
+  font-size: var(--fs-lg);
+}
+
+.psCard p {
+  margin-top: var(--space-3);
+  color: var(--ink-2);
+}
+
+.psProblem {
+  border-left: 4px solid #ffc9c9;
+}
+
+.psSolution {
+  border-left: 4px solid var(--brand);
+  background: linear-gradient(180deg, rgba(18, 184, 134, 0.05), transparent 60%);
+}
+
+.psArrow {
+  text-align: center;
+  font-size: 1.6rem;
+  color: var(--brand);
+  transform: rotate(90deg);
+}
+
+/* ---------- 핵심 기능 4종 ---------- */
+.featureGrid {
+  margin-top: var(--space-6);
+  display: grid;
+  gap: var(--space-4);
+}
+
+.featureIcon {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-sm);
+  background: var(--brand-soft);
+  color: var(--brand-ink);
+  margin-bottom: var(--space-3);
+}
+
+.featureIcon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.featureTitle {
+  font-size: var(--fs-lg);
+}
+
+.featureDesc {
+  margin-top: var(--space-2);
+  color: var(--ink-2);
+  font-size: var(--fs-sm);
+}
+
+/* ---------- 기대효과 / 타깃 ---------- */
+.impact {
+  margin-top: var(--space-8);
+  display: grid;
+  gap: var(--space-5);
+  align-items: center;
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  background: var(--bg-soft);
+}
+
+.impactTitle {
+  margin-top: var(--space-2);
+  font-size: var(--fs-2xl);
+}
+
+.impactLead {
+  margin-top: var(--space-3);
+  color: var(--ink-2);
+}
+
+.statList {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.statItem {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.statItem strong {
+  font-size: var(--fs-xl);
+  color: var(--brand-ink);
+  white-space: nowrap;
+}
+
+.statItem span {
+  color: var(--ink-2);
+  font-size: var(--fs-sm);
+}
+
+@media (min-width: 768px) {
+  .psGrid {
+    grid-template-columns: 1fr auto 1fr;
+  }
+  .psArrow {
+    transform: none;
+  }
+  .featureGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .impact {
+    grid-template-columns: 1fr 1fr;
+    padding: var(--space-7);
+  }
+}
+
+@media (min-width: 1024px) {
+  .featureGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.fineprintCta {
+  margin-top: var(--space-3);
+  font-size: var(--fs-xs);
+  color: rgba(255, 255, 255, 0.78);
+}

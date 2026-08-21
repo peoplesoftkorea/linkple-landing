@@ -9,3 +9,7 @@ node_modules/
 node_modules
 dist
 .vercel
+
+# env
+.env.local
+.env*.local
