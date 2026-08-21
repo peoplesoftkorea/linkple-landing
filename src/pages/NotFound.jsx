@@ -1,8 +1,10 @@
 import Container from "../components/layout/Container";
 import Button from "../components/ui/Button";
 import styles from "./NotFound.module.css";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
 export default function NotFound() {
+  useDocumentTitle("페이지를 찾을 수 없습니다");
   return (
     <Container narrow className={styles.wrap}>
       <p className={styles.code}>404</p>

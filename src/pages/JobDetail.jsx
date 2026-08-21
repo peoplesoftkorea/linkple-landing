@@ -11,6 +11,7 @@ import { useJobs } from "../hooks/useJobs";
 import { useAuth } from "../hooks/useAuth";
 import { useToast } from "../hooks/useToast";
 import { formatDate, formatSalary } from "../lib/format";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import styles from "./JobDetail.module.css";
 
 export default function JobDetail() {
@@ -23,6 +24,10 @@ export default function JobDetail() {
   const [applyOpen, setApplyOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
+
+  // 훅은 조기 반환보다 앞에 있어야 하므로 공고 조회를 여기서 끝낸다.
+  const job = getJobById(jobId);
+  useDocumentTitle(job ? `${job.title} · ${job.company}` : "공고 상세");
 
   if (status === "loading") {
     return (
@@ -48,8 +53,6 @@ export default function JobDetail() {
       </Container>
     );
   }
-
-  const job = getJobById(jobId);
 
   if (!job) {
     return (

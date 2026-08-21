@@ -9,6 +9,7 @@ import { hasErrors, validateLoginForm } from "../lib/validate";
 import { useAuth } from "../hooks/useAuth";
 import { useToast } from "../hooks/useToast";
 import styles from "./Login.module.css";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
 const DEMO = { email: "hr@linkple.kr", password: "linkple123" };
 
@@ -18,6 +19,7 @@ const DEMO = { email: "hr@linkple.kr", password: "linkple123" };
  * 실제 로그인이 갖춰야 할 흐름은 모두 갖춘다.
  */
 export default function Login() {
+  useDocumentTitle("로그인");
   const { isAuthenticated, login, pending } = useAuth();
   const { push } = useToast();
   const navigate = useNavigate();

@@ -12,6 +12,7 @@ import { useJobs } from "../hooks/useJobs";
 import { useAuth } from "../hooks/useAuth";
 import { useToast } from "../hooks/useToast";
 import styles from "./JobNew.module.css";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
 const EMPTY = {
   title: "",
@@ -26,6 +27,7 @@ const EMPTY = {
 };
 
 export default function JobNew() {
+  useDocumentTitle("공고 등록");
   const navigate = useNavigate();
   const { addJob } = useJobs();
   const { user } = useAuth();

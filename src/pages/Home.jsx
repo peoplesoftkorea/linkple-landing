@@ -6,6 +6,7 @@ import WaitlistForm from "../components/home/WaitlistForm";
 import { useJobs } from "../hooks/useJobs";
 import { useAuth } from "../hooks/useAuth";
 import styles from "./Home.module.css";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
 /** 미션5 랜딩의 '핵심 기능' 4종. 문구와 아이콘을 그대로 옮겼다. */
 const FEATURES = [
@@ -85,6 +86,7 @@ const STEPS = [
 ];
 
 export default function Home() {
+  useDocumentTitle();
   const { jobs, applications, status } = useJobs();
   const { isAuthenticated } = useAuth();
 

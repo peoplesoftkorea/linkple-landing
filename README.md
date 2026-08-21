@@ -121,20 +121,25 @@ Mock API 모드는 서버가 꺼져 있으면 **에러 화면과 다시 시도 �
 - **빈 화면** — "등록된 공고 없음"과 "조건에 맞는 공고 없음"을 구분해 다른 행동을 제안
 - **에러** — 저장소·API 실패 시 사유와 **다시 시도** 버튼 제시
 - **검증** — 필드별 메시지 + 제출 시 오류 요약(포커스 이동)
+- **에러 경계** — 렌더 중 예외가 나도 흰 화면 대신 원인과 복구 버튼을 남깁니다
+- **문서 제목** — 화면마다 브라우저 탭 제목이 바뀝니다 (`공고 탐색 · Linkple`, `HR 매니저 · 그로우테크 · Linkple`)
 
 ### 접근성
 
 `skip-link` · `:focus-visible` · `aria-live` · `aria-invalid`/`aria-describedby` ·
 `aria-expanded`/`aria-controls` · `aria-pressed` · `role="dialog"` 포커스 트랩 ·
-`prefers-reduced-motion` 대응. 모바일 퍼스트로 작성했고, 390px에서 가로 스크롤이 발생하지 않습니다.
+`prefers-reduced-motion` 대응. 모달은 열릴 때 닫기 버튼이 아니라 **첫 입력 칸으로 포커스를 옮깁니다** —
+DOM 순서가 아니라 사용자가 할 일을 기준으로 삼았습니다.
+모바일 퍼스트로 작성했고, 390px에서 가로 스크롤이 발생하지 않습니다.
 
 ---
 
 ## 폴더 구조
 
 ```
-├── db.json                   # JSON Server용 Mock DB (공고 10건)
+├── db.json                   # JSON Server용 Mock DB (공고 10건, `npm run seed:db`로 재생성)
 ├── .env.example              # Mock API 모드 설정 예시
+├── scripts/generate-db.mjs   # 시드 → db.json 생성 (시드 정본은 한 곳뿐)
 └── src/
     ├── main.jsx              # 진입점 · Provider 조립
     ├── App.jsx               # 라우트 정의
@@ -143,12 +148,13 @@ Mock API 모드는 서버가 꺼져 있으면 **에러 화면과 다시 시도 �
     │   ├── repository.js     # ★ 데이터 접근 계층 (localStorage ↔ Mock API)
     │   ├── seedJobs.js       # Mock 데이터 10건
     │   └── constants.js
-    ├── lib/                  # storage.js · validate.js · format.js · id.js
+    ├── lib/                  # storage.js · validate.js · format.js · id.js (+ *.test.js)
     ├── contexts/             # Auth · Jobs · Toast (Provider + Context 분리)
-    ├── hooks/                # useAuth · useJobs · useToast
+    ├── hooks/                # useAuth · useJobs · useToast · useDocumentTitle
+    ├── test/                 # Vitest 설정
     ├── components/
     │   ├── ui/               # 디자인 시스템 (Button · Field · Card · Modal · …)
-    │   ├── layout/           # Layout · Header · Footer · ProtectedRoute · …
+    │   ├── layout/           # Layout · Header · Footer · ProtectedRoute · ErrorBoundary · …
     │   ├── home/             # WaitlistForm
     │   └── job/              # JobCard · JobFilters · ApplyModal
     └── pages/                # Home · Jobs · JobDetail · JobNew · Applications · ApplyDone · Login · NotFound
@@ -164,6 +170,7 @@ npm run dev      # http://localhost:5173  (localStorage 모드)
 npm run build    # 프로덕션 빌드
 npm run preview  # 빌드 결과 확인
 npm run lint     # ESLint
+npm test         # Vitest (41개)
 ```
 
 ### Mock API 모드로 켜기
@@ -183,6 +190,29 @@ npm run dev                  # 터미널 B — 앱
 
 > 데이터를 처음 상태로 되돌리려면 브라우저 콘솔에서
 > `localStorage.clear()` 후 새로고침하세요.
+
+---
+
+## 테스트
+
+미션의 요구사항은 아니지만, 손으로 매번 확인할 수 없는 규칙은 테스트로 고정했습니다.
+
+```bash
+npm test           # Vitest — 6개 파일 · 41개 테스트
+npm run test:watch # 감시 모드
+```
+
+| 파일 | 검증 대상 |
+|---|---|
+| `lib/validate.test.js` | 공고·지원·로그인 폼의 모든 검증 규칙 (경계값 포함) |
+| `lib/format.test.js` | 연봉/날짜/이메일 표기 — 억 단위 환산, 잘못된 값이 화면을 깨뜨리지 않는지 |
+| `data/repository.test.js` | 시드 심기, 저장값 파손 시 복구, 영속, **공고 삭제 시 지원 내역 연쇄 정리** |
+| `components/ui/Button.test.jsx` | 변형·링크 렌더·로딩 중 중복 제출 차단 |
+| `components/job/JobCard.test.jsx` | 카드가 보여야 할 정보와 접근 가능한 링크 이름 |
+| `components/layout/ErrorBoundary.test.jsx` | 자식이 터졌을 때 흰 화면 대신 복구 안내가 나오는지 |
+
+> Node 26이 자체 `localStorage`를 전역에 올려 jsdom의 것을 가리는 문제가 있어,
+> `src/test/setup.js`에서 테스트용 저장소를 직접 세웁니다.
 
 ---
 
@@ -207,6 +237,16 @@ npm run dev                  # 터미널 B — 앱
 | UX 개선 | 로딩 스켈레톤 · 빈 화면 2종 · 에러 + 재시도 · 폼 검증 · 토스트 |
 | 디자인 시스템 | 토큰 + 재사용 UI 컴포넌트로 전 화면 통일 |
 | Mock Server *(선택)* | JSON Server + `repository.js` 전환 계층 |
+
+**요구사항 밖에서 더한 것**
+
+| 항목 | 구현 |
+|---|---|
+| 에러 경계 | 렌더 예외 시 흰 화면 방지 · 원인 표시 · 복구 버튼 |
+| 화면별 문서 제목 | 8개 라우트가 탭에서 구분됨 |
+| 테스트 | Vitest 41개 (검증 규칙 · 데이터 계층 · 컴포넌트) |
+| 접근성 | 모달 포커스 트랩/초기 포커스, `aria-*` 연결, 키보드 탐색 |
+| 반응형 | 모바일 퍼스트 · 390px 가로 스크롤 0 |
 
 ---
 

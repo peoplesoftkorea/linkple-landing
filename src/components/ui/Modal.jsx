@@ -14,6 +14,7 @@ export default function Modal({ open, onClose, title, description, children, lab
   const dialogRef = useRef(null);
   const restoreFocusRef = useRef(null);
   const titleId = labelledBy ?? "modal-title";
+  const descId = description ? `${titleId}-desc` : undefined;
 
   const handleKeyDown = useCallback(
     (event) => {
@@ -48,9 +49,13 @@ export default function Modal({ open, onClose, title, description, children, lab
     document.body.classList.add("is-locked");
 
     // 열리면 첫 조작 지점으로 포커스를 옮긴다.
+    // 닫기 버튼이 DOM상 먼저 오지만, 사용자가 할 일은 대개 입력이다.
     const timer = setTimeout(() => {
-      const nodes = dialogRef.current?.querySelectorAll(FOCUSABLE);
-      (nodes?.[0] ?? dialogRef.current)?.focus();
+      const firstControl = dialogRef.current?.querySelector(
+        "input:not([disabled]), textarea:not([disabled]), select:not([disabled])",
+      );
+      const fallback = dialogRef.current?.querySelectorAll(FOCUSABLE)?.[0];
+      (firstControl ?? fallback ?? dialogRef.current)?.focus();
     }, 0);
 
     return () => {
@@ -74,6 +79,7 @@ export default function Modal({ open, onClose, title, description, children, lab
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
+        aria-describedby={descId}
         ref={dialogRef}
         tabIndex={-1}
         onKeyDown={handleKeyDown}
@@ -83,7 +89,11 @@ export default function Modal({ open, onClose, title, description, children, lab
             <h2 className={styles.title} id={titleId}>
               {title}
             </h2>
-            {description && <p className={styles.desc}>{description}</p>}
+            {description && (
+              <p className={styles.desc} id={descId}>
+                {description}
+              </p>
+            )}
           </div>
           <button type="button" className={styles.close} onClick={onClose} aria-label="닫기">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">

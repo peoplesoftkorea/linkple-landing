@@ -2,27 +2,31 @@ import { useParams } from "react-router-dom";
 import Container from "../components/layout/Container";
 import Card from "../components/ui/Card";
 import Button from "../components/ui/Button";
-import { EmptyState } from "../components/ui/States";
+import { EmptyState, Skeleton } from "../components/ui/States";
 import { useJobs } from "../hooks/useJobs";
 import { formatDate, maskEmail } from "../lib/format";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import styles from "./ApplyDone.module.css";
 
 /** 흐름의 마지막 화면. 무엇이 접수됐는지 되짚어 주고 다음 행동을 제시한다. */
 export default function ApplyDone() {
   const { applicationId } = useParams();
   const { getApplicationById, status } = useJobs();
+  const application = getApplicationById(applicationId);
+  useDocumentTitle("지원 완료");
 
   if (status === "loading") {
     return (
       <Container narrow className={styles.wrap}>
-        <Card>
-          <p style={{ textAlign: "center", color: "var(--ink-3)" }}>불러오는 중…</p>
+        <Card className={styles.card} aria-busy="true" aria-label="접수증을 불러오는 중">
+          <Skeleton width={68} height={68} radius="999px" style={{ margin: "0 auto" }} />
+          <Skeleton width="60%" height={28} style={{ margin: "24px auto 0" }} />
+          <Skeleton width="80%" height={16} style={{ margin: "12px auto 0" }} />
+          <Skeleton height={168} radius="10px" style={{ marginTop: 24 }} />
         </Card>
       </Container>
     );
   }
-
-  const application = getApplicationById(applicationId);
 
   if (!application) {
     return (

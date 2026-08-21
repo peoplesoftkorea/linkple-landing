@@ -12,8 +12,10 @@ import { useAuth } from "../hooks/useAuth";
 import { useToast } from "../hooks/useToast";
 import { formatDate } from "../lib/format";
 import styles from "./Applications.module.css";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
 export default function Applications() {
+  useDocumentTitle("내 지원 내역");
   const { applications, withdrawApplication } = useJobs();
   const { user } = useAuth();
   const { push } = useToast();

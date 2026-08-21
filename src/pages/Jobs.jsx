@@ -9,10 +9,12 @@ import JobFilters from "../components/job/JobFilters";
 import { useJobs } from "../hooks/useJobs";
 import { useAuth } from "../hooks/useAuth";
 import styles from "./Jobs.module.css";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
 const DEFAULTS = { keyword: "", category: "전체", employmentType: "전체", sort: "latest" };
 
 export default function Jobs() {
+  useDocumentTitle("공고 탐색");
   // 필터를 URL에 실어 두면, 상세를 보고 뒤로 왔을 때 조건이 그대로 남는다.
   const [searchParams, setSearchParams] = useSearchParams();
   const { jobs, applications, status, error, retry } = useJobs();
