@@ -1,0 +1,344 @@
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-8) 0 var(--space-9);
+  background:
+    radial-gradient(1000px 420px at 88% -8%, rgba(18, 184, 134, 0.16), transparent 60%),
+    var(--bg-soft);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  background: var(--white);
+  box-shadow: var(--shadow-sm);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--brand-ink);
+}
+
+.title {
+  margin-top: var(--space-5);
+  font-size: 2.1rem;
+  line-height: 1.18;
+}
+
+.grad {
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.lead {
+  margin-top: var(--space-5);
+  color: var(--ink-2);
+  font-size: var(--fs-lg);
+  line-height: var(--lh-relaxed);
+  max-width: var(--measure);
+}
+
+.actions {
+  margin-top: var(--space-6);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.note {
+  margin-top: var(--space-4);
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}
+
+.stats {
+  margin-top: var(--space-7);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+  padding: var(--space-5);
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  max-width: 520px;
+}
+
+.stat {
+  text-align: center;
+}
+
+.statValue {
+  display: block;
+  font-size: var(--fs-xl);
+  font-weight: 800;
+  color: var(--brand-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.statLabel {
+  display: block;
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}
+
+.section {
+  /* 섹션 사이에 같은 크기의 호흡을 둔다. 위에만 여백이 있으면
+     앞 섹션에 붙어 읽혀 경계가 흐려진다. 데스크탑에서 한 단계 더 벌린다. */
+  padding: var(--space-8) 0;
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: var(--space-9) 0;
+  }
+}
+
+.sectionTitle {
+  font-size: var(--fs-2xl);
+  text-align: center;
+}
+
+.sectionDesc {
+  margin-top: var(--space-4);
+  text-align: center;
+  color: var(--ink-2);
+  max-width: var(--measure);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.steps {
+  margin-top: var(--space-7);
+  display: grid;
+  gap: var(--space-5);
+}
+
+.step {
+  position: relative;
+  padding-top: var(--space-6);
+}
+
+.stepNo {
+  position: absolute;
+  top: var(--space-5);
+  right: var(--space-5);
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: rgba(18, 184, 134, 0.14);
+  line-height: 1;
+}
+
+.stepIcon {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-sm);
+  background: var(--brand-soft);
+  color: var(--brand-ink);
+  margin-bottom: var(--space-3);
+}
+
+.stepTitle {
+  font-size: var(--fs-lg);
+}
+
+.stepDesc {
+  margin-top: var(--space-3);
+  color: var(--ink-2);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-relaxed);
+}
+
+.cta {
+  margin: var(--space-8) 0 var(--space-6);
+  padding: var(--space-9) var(--space-5);
+  border-radius: var(--radius-lg);
+  background: var(--grad);
+  color: #fff;
+  text-align: center;
+}
+
+.ctaTitle {
+  font-size: var(--fs-2xl);
+}
+
+.ctaDesc {
+  margin-top: var(--space-4);
+  color: rgba(255, 255, 255, 0.9);
+  max-width: var(--measure);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ctaActions {
+  margin-top: var(--space-5);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 3rem;
+  }
+  .steps {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ---------- 문제 → 해결 (미션5 랜딩 섹션 이식) ---------- */
+.eyebrowCenter {
+  text-align: center;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--brand-ink);
+}
+
+.psGrid {
+  margin-top: var(--space-6);
+  display: grid;
+  gap: var(--space-5);
+  align-items: center;
+}
+
+.psCard h3 {
+  font-size: var(--fs-lg);
+}
+
+.psCard p {
+  margin-top: var(--space-3);
+  color: var(--ink-2);
+  line-height: var(--lh-relaxed);
+}
+
+.psProblem {
+  border-left: 4px solid #ffc9c9;
+}
+
+.psSolution {
+  border-left: 4px solid var(--brand);
+  background: linear-gradient(180deg, rgba(18, 184, 134, 0.05), transparent 60%);
+}
+
+.psArrow {
+  text-align: center;
+  font-size: 1.6rem;
+  color: var(--brand);
+  transform: rotate(90deg);
+}
+
+/* ---------- 핵심 기능 4종 ---------- */
+.featureGrid {
+  margin-top: var(--space-7);
+  display: grid;
+  gap: var(--space-5);
+}
+
+.featureIcon {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-sm);
+  background: var(--brand-soft);
+  color: var(--brand-ink);
+  margin-bottom: var(--space-3);
+}
+
+.featureIcon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.featureTitle {
+  font-size: var(--fs-lg);
+}
+
+.featureDesc {
+  margin-top: var(--space-3);
+  color: var(--ink-2);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-relaxed);
+}
+
+/* ---------- 기대효과 / 타깃 ---------- */
+.impact {
+  margin-top: var(--space-8);
+  display: grid;
+  gap: var(--space-6);
+  align-items: center;
+  padding: var(--space-7) var(--space-6);
+  border-radius: var(--radius-lg);
+  background: var(--bg-soft);
+}
+
+.impactTitle {
+  margin-top: var(--space-2);
+  font-size: var(--fs-2xl);
+}
+
+.impactLead {
+  margin-top: var(--space-4);
+  color: var(--ink-2);
+  line-height: var(--lh-relaxed);
+  max-width: var(--measure-narrow);
+}
+
+.statList {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.statItem {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.statItem strong {
+  font-size: var(--fs-xl);
+  color: var(--brand-ink);
+  white-space: nowrap;
+}
+
+.statItem span {
+  color: var(--ink-2);
+  font-size: var(--fs-sm);
+}
+
+@media (min-width: 768px) {
+  .psGrid {
+    grid-template-columns: 1fr auto 1fr;
+  }
+  .psArrow {
+    transform: none;
+  }
+  /* 기능 카드는 2열까지만 늘린다.
+     4열로 벌리면 카드 폭이 좁아져 설명이 줄당 15자로 잘리고,
+     같은 문장이 서너 줄로 쌓여 답답해진다. (멘토 피드백 2026-08-21) */
+  .featureGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .impact {
+    grid-template-columns: 1fr 1fr;
+    padding: var(--space-8) var(--space-7);
+  }
+}
+
+.fineprintCta {
+  margin-top: var(--space-3);
+  font-size: var(--fs-xs);
+  color: rgba(255, 255, 255, 0.78);
+}

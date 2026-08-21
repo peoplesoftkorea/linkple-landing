@@ -1,0 +1,25 @@
+.wrap {
+  padding: var(--space-6) 0 var(--space-9);
+}
+
+.grid {
+  margin-top: var(--space-5);
+  display: grid;
+  gap: var(--space-5);
+}
+
+.empty {
+  margin-top: var(--space-5);
+}
+
+@media (min-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

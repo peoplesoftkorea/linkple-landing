@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="560" viewBox="0 0 1400 560" font-family="Apple SD Gothic Neo, AppleGothic, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#45566b"/>
+    </marker>
+    <marker id="arrowBrand" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#12b886"/>
+    </marker>
+  </defs>
+
+  <rect width="1400" height="560" fill="#ffffff"/>
+  <text x="30" y="42" font-size="26" font-weight="700" fill="#0f1b2d">유저 플로우 A — 공고를 찾아 지원한다</text>
+  <text x="30" y="70" font-size="15" fill="#7b8a9c">구직자 관점 · 실선 = 주 흐름, 점선 = 조건부 분기</text>
+
+  <!-- 상단 분기 노드 -->
+  <g>
+    <rect x="240" y="130" width="180" height="70" rx="12" fill="#f3f8f6" stroke="#cfe0d8" stroke-width="2" stroke-dasharray="6 4"/>
+    <text x="330" y="162" font-size="17" font-weight="700" fill="#45566b" text-anchor="middle">빈 화면 안내</text>
+    <text x="330" y="184" font-size="13" fill="#7b8a9c" text-anchor="middle">조건 초기화 버튼</text>
+  </g>
+  <g>
+    <rect x="480" y="130" width="180" height="70" rx="12" fill="#f3f8f6" stroke="#cfe0d8" stroke-width="2" stroke-dasharray="6 4"/>
+    <text x="570" y="162" font-size="17" font-weight="700" fill="#45566b" text-anchor="middle">로그인</text>
+    <text x="570" y="184" font-size="13" fill="#7b8a9c" text-anchor="middle">/login</text>
+  </g>
+
+  <!-- 주 흐름 노드 -->
+  <g>
+    <rect x="30" y="270" width="150" height="80" rx="12" fill="#ffffff" stroke="#12b886" stroke-width="2.5"/>
+    <text x="105" y="305" font-size="18" font-weight="700" fill="#0f1b2d" text-anchor="middle">홈</text>
+    <text x="105" y="328" font-size="13" fill="#7b8a9c" text-anchor="middle">/</text>
+  </g>
+  <g>
+    <rect x="240" y="270" width="180" height="80" rx="12" fill="#ffffff" stroke="#12b886" stroke-width="2.5"/>
+    <text x="330" y="305" font-size="18" font-weight="700" fill="#0f1b2d" text-anchor="middle">공고 목록</text>
+    <text x="330" y="328" font-size="13" fill="#7b8a9c" text-anchor="middle">/jobs</text>
+  </g>
+  <g>
+    <rect x="480" y="270" width="180" height="80" rx="12" fill="#ffffff" stroke="#12b886" stroke-width="2.5"/>
+    <text x="570" y="305" font-size="18" font-weight="700" fill="#0f1b2d" text-anchor="middle">공고 상세</text>
+    <text x="570" y="328" font-size="13" fill="#7b8a9c" text-anchor="middle">/jobs/:jobId</text>
+  </g>
+  <g>
+    <rect x="720" y="270" width="170" height="80" rx="12" fill="#e7f7f1" stroke="#12b886" stroke-width="2.5"/>
+    <text x="805" y="305" font-size="18" font-weight="700" fill="#0b7a5c" text-anchor="middle">지원서 모달</text>
+    <text x="805" y="328" font-size="13" fill="#0b7a5c" text-anchor="middle">입력 검증</text>
+  </g>
+  <g>
+    <rect x="950" y="270" width="180" height="80" rx="12" fill="#ffffff" stroke="#12b886" stroke-width="2.5"/>
+    <text x="1040" y="305" font-size="18" font-weight="700" fill="#0f1b2d" text-anchor="middle">접수증</text>
+    <text x="1040" y="328" font-size="13" fill="#7b8a9c" text-anchor="middle">/applications/:id/done</text>
+  </g>
+  <g>
+    <rect x="1190" y="270" width="180" height="80" rx="12" fill="#ffffff" stroke="#12b886" stroke-width="2.5"/>
+    <text x="1280" y="305" font-size="18" font-weight="700" fill="#0f1b2d" text-anchor="middle">내 지원 내역</text>
+    <text x="1280" y="328" font-size="13" fill="#7b8a9c" text-anchor="middle">/applications</text>
+  </g>
+
+  <!-- 주 흐름 화살표 -->
+  <line x1="180" y1="310" x2="234" y2="310" stroke="#12b886" stroke-width="2.5" marker-end="url(#arrowBrand)"/>
+  <line x1="420" y1="310" x2="474" y2="310" stroke="#12b886" stroke-width="2.5" marker-end="url(#arrowBrand)"/>
+  <line x1="660" y1="310" x2="714" y2="310" stroke="#12b886" stroke-width="2.5" marker-end="url(#arrowBrand)"/>
+  <line x1="890" y1="310" x2="944" y2="310" stroke="#12b886" stroke-width="2.5" marker-end="url(#arrowBrand)"/>
+  <line x1="1130" y1="310" x2="1184" y2="310" stroke="#12b886" stroke-width="2.5" marker-end="url(#arrowBrand)"/>
+
+  <text x="207" y="298" font-size="13" fill="#45566b" text-anchor="middle">둘러보기</text>
+  <text x="447" y="298" font-size="13" fill="#45566b" text-anchor="middle">카드 선택</text>
+  <text x="687" y="298" font-size="13" fill="#45566b" text-anchor="middle">지원하기</text>
+  <text x="917" y="298" font-size="13" fill="#45566b" text-anchor="middle">제출</text>
+  <text x="1157" y="298" font-size="13" fill="#45566b" text-anchor="middle">확인</text>
+
+  <!-- 분기: 목록 → 빈 화면 -->
+  <line x1="305" y1="270" x2="305" y2="206" stroke="#7b8a9c" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrow)"/>
+  <line x1="355" y1="200" x2="355" y2="264" stroke="#7b8a9c" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrow)"/>
+  <text x="180" y="228" font-size="13" fill="#45566b">조건 불일치</text>
+  <text x="368" y="248" font-size="13" fill="#45566b">초기화</text>
+
+  <!-- 분기: 상세 → 로그인 -->
+  <line x1="545" y1="270" x2="545" y2="206" stroke="#7b8a9c" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrow)"/>
+  <line x1="595" y1="200" x2="595" y2="264" stroke="#7b8a9c" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrow)"/>
+  <text x="420" y="228" font-size="13" fill="#45566b">비로그인</text>
+  <text x="608" y="248" font-size="13" fill="#45566b">원래 화면 복귀</text>
+
+  <!-- 분기: 검증 실패 되돌림 -->
+  <path d="M 760 350 L 760 420 L 860 420 L 860 350" fill="none" stroke="#e03131" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrow)"/>
+  <text x="810" y="444" font-size="13" fill="#e03131" text-anchor="middle">검증 실패 — 모달 유지 · 사유 표시</text>
+
+  <!-- 하단 설명 -->
+  <rect x="30" y="470" width="1340" height="60" rx="10" fill="#f3f8f6"/>
+  <text x="52" y="497" font-size="14" fill="#45566b">로딩 = 스켈레톤 · 결과 없음 = 빈 화면 안내 · 조회 실패 = 사유 + 다시 시도 · 이미 지원한 공고 = 버튼 대신 &#34;이미 지원한 공고입니다&#34;</text>
+  <text x="52" y="519" font-size="14" fill="#45566b">목록의 검색 · 필터 · 정렬 조건은 URL 쿼리에 남아, 상세를 보고 뒤로 와도 그대로 유지된다.</text>
+</svg>
