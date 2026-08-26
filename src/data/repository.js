@@ -2,151 +2,156 @@
  * 데이터 접근 계층.
  *
  * 화면은 데이터가 어디서 오는지 모른다. 여기서만 안다.
- *  - 기본값: 브라우저 localStorage (배포본이 서버 없이 그대로 동작)
- *  - VITE_API_BASE_URL이 있으면: JSON Server Mock API (`npm run server`)
+ *  - 기본값: 미션7 백엔드 API (같은 오리진의 `/api`)
+ *  - VITE_API_BASE_URL 로 주소를 바꿀 수 있다 (로컬 개발: http://localhost:3001)
  *
- * 미션7에서 실제 API로 갈아탈 때 바꿀 곳도 이 파일 하나다.
+ * 이 파일이 하는 일은 둘이다.
+ *  ① 요청을 보내고 ② 서버의 모양을 화면이 쓰던 모양으로 번역한다.
+ * 번역을 여기에 두는 이유 — 서버 응답이 바뀌어도 화면 20곳을 고치지 않기 위해서다.
  */
 
-import { SEED_JOBS } from "./seedJobs";
-import {
-  STORAGE_KEYS,
-  isStorageAvailable,
-  readStorage,
-  writeStorage,
-} from "../lib/storage";
+import { STORAGE_KEYS, readStorage } from "../lib/storage";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ?? "";
+const API_BASE = (import.meta.env.VITE_API_BASE_URL ?? "/api").replace(/\/$/, "");
 
-/** 현재 어느 저장소를 쓰고 있는지. 화면 안내 문구에도 쓰인다. */
-export const dataSource = API_BASE ? "api" : "local";
-
-const FAKE_LATENCY_MS = 450;
-
-const delay = (ms = FAKE_LATENCY_MS) => new Promise((resolve) => setTimeout(resolve, ms));
+/** 어디서 읽고 있는지. 화면 안내 문구에도 쓰인다. */
+export const dataSource = "api";
 
 /* ------------------------------------------------------------------ *
- * localStorage 구현
+ * 요청
  * ------------------------------------------------------------------ */
 
-const localRepository = {
-  async loadAll() {
-    // 네트워크 지연을 흉내 내 로딩(스켈레톤) 상태가 실제로 보이게 한다.
-    await delay();
+/** 로그인하면 저장해 둔 토큰. 있으면 실어 보내고, 없으면 그냥 보낸다. */
+function authHeader() {
+  const session = readStorage(STORAGE_KEYS.auth, null);
+  return session?.token ? { Authorization: `Bearer ${session.token}` } : {};
+}
 
-    if (!isStorageAvailable()) {
-      throw new Error(
-        "브라우저 저장소를 사용할 수 없습니다. 시크릿 모드이거나 저장소가 차단된 상태일 수 있습니다.",
-      );
-    }
-
-    const storedJobs = readStorage(STORAGE_KEYS.jobs, null);
-    if (!Array.isArray(storedJobs)) {
-      // 첫 방문이거나 저장값이 깨진 경우 — 시드로 되돌린다.
-      writeStorage(STORAGE_KEYS.jobs, SEED_JOBS);
-      writeStorage(STORAGE_KEYS.applications, []);
-      return { jobs: SEED_JOBS, applications: [] };
-    }
-
-    const storedApps = readStorage(STORAGE_KEYS.applications, null);
-    return { jobs: storedJobs, applications: Array.isArray(storedApps) ? storedApps : [] };
-  },
-
-  async createJob(job) {
-    await delay(200);
-    const jobs = readStorage(STORAGE_KEYS.jobs, []);
-    writeStorage(STORAGE_KEYS.jobs, [job, ...jobs]);
-    return job;
-  },
-
-  async deleteJob(id) {
-    await delay(200);
-    const jobs = readStorage(STORAGE_KEYS.jobs, []);
-    writeStorage(
-      STORAGE_KEYS.jobs,
-      jobs.filter((job) => job.id !== id),
-    );
-
-    // 사라진 공고에 매달린 지원 내역도 함께 정리한다.
-    const apps = readStorage(STORAGE_KEYS.applications, []);
-    writeStorage(
-      STORAGE_KEYS.applications,
-      apps.filter((app) => app.jobId !== id),
-    );
-  },
-
-  async createApplication(application) {
-    await delay(200);
-    const apps = readStorage(STORAGE_KEYS.applications, []);
-    writeStorage(STORAGE_KEYS.applications, [application, ...apps]);
-    return application;
-  },
-
-  async deleteApplication(id) {
-    await delay(200);
-    const apps = readStorage(STORAGE_KEYS.applications, []);
-    writeStorage(
-      STORAGE_KEYS.applications,
-      apps.filter((app) => app.id !== id),
-    );
-  },
-};
-
-/* ------------------------------------------------------------------ *
- * JSON Server (Mock API) 구현
- * ------------------------------------------------------------------ */
-
-async function request(path, options) {
+async function request(path, options = {}) {
   let response;
   try {
     response = await fetch(`${API_BASE}${path}`, {
-      headers: { "Content-Type": "application/json" },
       ...options,
+      headers: { "Content-Type": "application/json", ...authHeader(), ...options.headers },
     });
   } catch {
-    throw new Error(
-      `Mock API 서버(${API_BASE})에 연결하지 못했습니다. \`npm run server\`가 켜져 있는지 확인해 주세요.`,
-    );
+    // 네트워크가 끊긴 것과 서버가 400을 준 것은 사용자에게 다른 사건이다.
+    throw new Error("서버에 연결하지 못했습니다. 네트워크 상태를 확인해 주세요.");
   }
 
+  if (response.status === 204) return null;
+
+  const body = await response.json().catch(() => null);
   if (!response.ok) {
-    throw new Error(`요청이 실패했습니다. (HTTP ${response.status})`);
+    // 서버가 사람이 읽을 문장을 보내면 그대로 쓴다. 없으면 상태코드로 만든다.
+    throw new Error(body?.message ?? `요청이 실패했습니다. (HTTP ${response.status})`);
   }
-
-  return response.status === 204 ? null : response.json();
+  return body;
 }
 
-const apiRepository = {
+/* ------------------------------------------------------------------ *
+ * 번역 — 서버의 모양 → 화면이 쓰던 모양
+ * ------------------------------------------------------------------ */
+
+const STATUS_LABEL = {
+  RECEIVED: "접수 완료",
+  REVIEWING: "검토 중",
+  ACCEPTED: "합격",
+  REJECTED: "불합격",
+};
+
+const toJob = (job) => ({
+  ...job,
+  salary: job.salary ?? 0,
+  requirements: job.requirements ?? [],
+  benefits: job.benefits ?? [],
+  createdBy: job.author?.email ?? job.createdBy ?? null,
+});
+
+const toApplication = (app) => ({
+  id: app.id,
+  jobId: app.jobId,
+  jobTitle: app.job?.title ?? "",
+  company: app.job?.company ?? "",
+  name: app.name,
+  email: app.email,
+  phone: app.phone ?? "",
+  message: app.message ?? "",
+  applicantEmail: app.email,
+  status: STATUS_LABEL[app.status] ?? "접수 완료",
+  createdAt: app.createdAt,
+});
+
+/* ------------------------------------------------------------------ *
+ * 저장소
+ * ------------------------------------------------------------------ */
+
+export const repository = {
   async loadAll() {
-    const [jobs, applications] = await Promise.all([
-      request("/jobs"),
-      request("/applications"),
-    ]);
-    return { jobs, applications };
+    const { jobs } = await request("/jobs?pageSize=100");
+
+    // 지원 내역은 로그인한 사람의 것만 존재한다. 비로그인 방문자에게는 빈 배열이
+    // 정상이지 오류가 아니다 — 여기서 삼키지 않으면 목록 화면 전체가 에러로 뒤집힌다.
+    let applications = [];
+    if (readStorage(STORAGE_KEYS.auth, null)?.token) {
+      try {
+        applications = (await request("/applications")).map(toApplication);
+      } catch {
+        applications = [];
+      }
+    }
+    return { jobs: jobs.map(toJob), applications };
   },
 
-  createJob(job) {
-    return request("/jobs", { method: "POST", body: JSON.stringify(job) });
+  async createJob(job) {
+    // id·createdAt·source 는 보내지 않는다. 그건 이제 서버가 정한다.
+    const created = await request("/jobs", {
+      method: "POST",
+      body: JSON.stringify({
+        title: job.title,
+        company: job.company,
+        location: job.location,
+        category: job.category,
+        employmentType: job.employmentType,
+        salary: job.salary ? Number(job.salary) : null,
+        description: job.description,
+        requirements: job.requirements ?? [],
+        benefits: job.benefits ?? [],
+      }),
+    });
+    return toJob(created);
   },
 
   async deleteJob(id) {
+    // 딸린 지원 내역은 서버(스키마의 Cascade)가 함께 정리한다.
+    // 미션6에서는 이 정리를 클라이언트가 했다 — 중간에 창을 닫으면 고아가 남았다.
     await request(`/jobs/${id}`, { method: "DELETE" });
-    const orphans = await request(`/applications?jobId=${encodeURIComponent(id)}`);
-    await Promise.all(
-      orphans.map((app) => request(`/applications/${app.id}`, { method: "DELETE" })),
-    );
   },
 
-  createApplication(application) {
-    return request("/applications", {
+  async createApplication(application) {
+    const created = await request("/applications", {
       method: "POST",
-      body: JSON.stringify(application),
+      body: JSON.stringify({
+        jobId: application.jobId,
+        name: application.name,
+        email: application.email,
+        phone: application.phone || null,
+        message: application.message || null,
+      }),
     });
+    return toApplication(created);
   },
 
-  deleteApplication(id) {
-    return request(`/applications/${id}`, { method: "DELETE" });
+  async deleteApplication(id) {
+    await request(`/applications/${id}`, { method: "DELETE" });
   },
 };
 
-export const repository = dataSource === "api" ? apiRepository : localRepository;
+/** 로그인·회원가입도 같은 통로를 쓴다. */
+export const authApi = {
+  login: (email, password) =>
+    request("/auth/login", { method: "POST", body: JSON.stringify({ email, password }) }),
+  signup: (payload) =>
+    request("/auth/signup", { method: "POST", body: JSON.stringify(payload) }),
+  me: () => request("/auth/me"),
+};

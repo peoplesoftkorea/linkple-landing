@@ -3,21 +3,32 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Linkple — 통합 HR 플랫폼 프론트엔드 MVP (코드잇 스프린트 미션6)",
+  "description": "Linkple — 통합 HR 플랫폼 MVP (코드잇 스프린트 미션6 프론트 + 미션7 백엔드)",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint .",
-    "server": "json-server db.json --port 3001",
     "test": "vitest run",
     "test:watch": "vitest",
-    "seed:db": "node scripts/generate-db.mjs"
+    "seed:db": "node scripts/generate-db.mjs",
+    "api": "node server/index.js",
+    "api:dev": "node --watch server/index.js",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "node prisma/seed.js",
+    "db:studio": "prisma studio",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router-dom": "^7.1.0"
+    "react-router-dom": "^7.1.0",
+    "@prisma/client": "6.19.3",
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.2",
+    "superstruct": "^2.0.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
@@ -33,6 +44,10 @@
     "jsdom": "^30.0.1",
     "json-server": "^0.17.4",
     "vite": "^6.3.1",
-    "vitest": "^3.2.7"
+    "vitest": "^3.2.7",
+    "prisma": "6.19.3"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   }
 }

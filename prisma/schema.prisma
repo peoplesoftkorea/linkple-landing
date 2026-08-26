@@ -1,0 +1,79 @@
+// Linkple MVP — 미션7 백엔드 데이터 모델
+//
+// id 를 String(cuid) 으로 둔 이유: 미션6 프론트가 이미 문자열 id("job_seed_01")를
+// 전제로 쓰고 있다. 서버가 숫자 id 를 주면 프론트 여러 곳을 함께 고쳐야 한다.
+// 데이터 모델은 화면의 기존 계약을 깨지 않는 선에서 고른다.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(cuid())
+  email        String        @unique
+  passwordHash String
+  name         String
+  company      String?
+  jobs         Job[]                       // 이 사람이 올린 공고
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Job {
+  id             String        @id @default(cuid())
+  title          String
+  company        String
+  location       String
+  category       String
+  employmentType String
+  salary         Int?                       // 만원 단위. 협의 가능이면 비운다.
+  description    String
+  requirements   String[]      @default([])
+  benefits       String[]      @default([])
+  source         String        @default("user")   // seed | user
+  // 공고를 올린 사람. 계정이 지워져도 공고는 남긴다 → SetNull(옵셔널이어야 성립).
+  author         User?         @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  authorId       String?
+  // 공고가 내려가면 그 공고의 지원 내역도 함께 정리한다.
+  applications   Application[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([category])
+  @@index([createdAt])
+}
+
+model Application {
+  id        String   @id @default(cuid())
+  job       Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  jobId     String
+  name      String
+  email     String
+  phone     String?
+  message   String?
+  status    AppStatus @default(RECEIVED)
+  createdAt DateTime @default(now())
+
+  // 같은 사람이 같은 공고에 두 번 지원하지 않게 — DB가 막는다.
+  @@unique([jobId, email])
+  @@index([jobId])
+}
+
+model WaitlistEntry {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  company   String?
+  createdAt DateTime @default(now())
+}
+
+enum AppStatus {
+  RECEIVED
+  REVIEWING
+  ACCEPTED
+  REJECTED
+}
