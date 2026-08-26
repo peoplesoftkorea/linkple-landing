@@ -31,7 +31,7 @@ export default [
   },
   {
     // 서버 코드는 브라우저가 아니라 Node 에서 돈다 — 전역이 다르다.
-    files: ["server/**/*.js", "api/**/*.js", "prisma/**/*.js", "scripts/**/*.mjs"],
+    files: ["server/**/*.js", "api/**/*.js", "prisma/**/*.js", "scripts/**/*.mjs", "vite.config.js"],
     languageOptions: {
       ecmaVersion: 2022,
       globals: { ...globals.node },

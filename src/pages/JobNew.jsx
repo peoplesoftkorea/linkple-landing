@@ -82,7 +82,7 @@ export default function JobNew() {
       <PageHeader
         eyebrow="New posting"
         title="공고 등록"
-        description="등록한 공고는 이 브라우저에 저장되어, 새로고침해도 목록에 그대로 남습니다."
+        description="등록한 공고는 서버에 저장되어 모든 방문자에게 바로 보입니다."
       />
 
       <Container narrow className={styles.wrap}>

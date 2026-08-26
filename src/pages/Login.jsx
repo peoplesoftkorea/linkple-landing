@@ -67,7 +67,7 @@ export default function Login() {
           <span aria-hidden="true">💡</span>
           <div>
             <strong>학습용 시뮬레이션입니다.</strong> 실제 계정 인증은 하지 않습니다. 형식이 맞는
-            이메일과 6자 이상 비밀번호면 로그인되고, 로그인 상태는 이 브라우저에만 저장됩니다.
+            가입한 이메일과 비밀번호로 로그인합니다. 로그인 상태는 이 브라우저에 토큰으로 보관되며, 비밀번호는 저장하지 않습니다.
             <br />
             <button
               type="button"
