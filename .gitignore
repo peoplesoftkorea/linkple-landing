@@ -11,5 +11,11 @@ dist
 .vercel
 
 # env
+# 비밀은 파일 이름이 무엇이든 올리지 않는다.
+# `.env.local` 만 막아 두면 `.env` 가 그대로 새어 나간다 — 공개 저장소에서는 치명적이다.
+.env
+.env.*
+!.env.example
 .env.local
 .env*.local
+.env*

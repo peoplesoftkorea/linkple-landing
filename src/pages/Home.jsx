@@ -126,7 +126,7 @@ export default function Home() {
           </div>
 
           <p className={styles.note}>
-            학습용 MVP입니다. 입력한 데이터는 이 브라우저에만 남습니다.
+            학습용 MVP입니다. 입력한 데이터는 학습용 서버에 저장됩니다.
           </p>
 
           <dl className={styles.stats}>
@@ -264,7 +264,7 @@ export default function Home() {
           <WaitlistForm />
 
           <p className={styles.fineprintCta}>
-            이메일은 전송되지 않고 이 브라우저에만 저장됩니다.
+            학습용 서버에 사전 신청으로 저장되며, 메일을 보내지는 않습니다.
           </p>
 
           <div className={styles.ctaActions}>

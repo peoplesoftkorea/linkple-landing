@@ -1,15 +1,16 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import { STORAGE_KEYS, readStorage, removeStorage, writeStorage } from "../lib/storage";
+import { authApi } from "../data/repository";
 
 /**
- * 로그인 시뮬레이션.
- * 서버가 없으므로 실제 인증은 하지 않는다. 대신 "로그인한 상태"라는 사실만
- * localStorage에 남겨, 새로고침해도 세션이 유지되는 경험을 만든다.
- * 데모 규칙: 형식이 맞는 이메일 + 6자 이상 비밀번호면 통과.
+ * 실제 인증(미션7).
+ * 미션6에서는 서버가 없어 "로그인한 척"만 했다. 이제는 서버가 비밀번호를 확인하고
+ * 토큰을 내준다. 토큰은 localStorage에 담아 새로고침을 견디게 하고,
+ * 요청을 보낼 때 repository가 꺼내 실어 보낸다.
+ *
+ * 저장하는 것은 세션(사용자 + 토큰)이지 비밀번호가 아니다.
  */
-const DEMO_PASSWORD_MIN = 6;
-const FAKE_LATENCY_MS = 600;
 
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(() => readStorage(STORAGE_KEYS.auth, null));
@@ -23,20 +24,28 @@ export default function AuthProvider({ children }) {
   const login = useCallback(async ({ email, password }) => {
     setPending(true);
     try {
-      // 네트워크 지연을 흉내 내 로딩 상태가 실제로 보이게 한다.
-      await new Promise((resolve) => setTimeout(resolve, FAKE_LATENCY_MS));
+      // 서버가 계정과 비밀번호를 확인하고 토큰을 준다.
+      // 실패 사유(없는 계정 / 틀린 비밀번호)는 서버가 구분해 알려주지 않는다 —
+      // 구분해 주면 "이 이메일은 가입돼 있다"는 사실이 새어 나간다.
+      const { user: account, token } = await authApi.login(email.trim(), password);
+      const nextUser = { ...account, token, loggedInAt: new Date().toISOString() };
+      setUser(nextUser);
+      return nextUser;
+    } finally {
+      setPending(false);
+    }
+  }, []);
 
-      if (!password || password.length < DEMO_PASSWORD_MIN) {
-        throw new Error("비밀번호가 올바르지 않습니다. 6자 이상 입력해 주세요.");
-      }
-
-      const localPart = email.split("@")[0] ?? "담당자";
-      const nextUser = {
-        email,
-        name: `${localPart} 님`,
-        company: email.split("@")[1]?.split(".")[0] ?? "우리 회사",
-        loggedInAt: new Date().toISOString(),
-      };
+  const signup = useCallback(async (values) => {
+    setPending(true);
+    try {
+      const { user: account, token } = await authApi.signup({
+        email: values.email.trim(),
+        password: values.password,
+        name: values.name?.trim() || values.email.split("@")[0],
+        company: values.company?.trim() || undefined,
+      });
+      const nextUser = { ...account, token, loggedInAt: new Date().toISOString() };
       setUser(nextUser);
       return nextUser;
     } finally {
@@ -49,8 +58,8 @@ export default function AuthProvider({ children }) {
   }, []);
 
   const value = useMemo(
-    () => ({ user, isAuthenticated: Boolean(user), pending, login, logout }),
-    [user, pending, login, logout],
+    () => ({ user, isAuthenticated: Boolean(user), pending, login, signup, logout }),
+    [user, pending, login, signup, logout],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

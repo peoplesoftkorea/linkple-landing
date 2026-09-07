@@ -48,7 +48,7 @@ export default function Applications() {
       <PageHeader
         eyebrow="My applications"
         title="내 지원 내역"
-        description={`${user.email} 계정으로 접수한 지원서입니다. 브라우저에 저장되어 새로고침해도 남습니다.`}
+        description={`${user.email} 계정으로 접수한 지원서입니다. 서버에 저장되어 어느 기기에서 열어도 같습니다.`}
       />
 
       <Container narrow className={styles.wrap}>
