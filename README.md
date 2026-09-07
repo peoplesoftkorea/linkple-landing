@@ -1,17 +1,38 @@
-# Linkple — 프론트엔드 MVP
+# Linkple — 클라이언트-서버 MVP
 
-> **채용부터 복지까지, 사람과 일을 잇다.** 통합 HR 플랫폼 Linkple의 **프론트엔드 MVP**입니다.
-> 코드잇 스프린트 · IT창업가 과정 **스프린트 미션 6**(프론트엔드 MVP 구현) 제출물.
+> **채용부터 복지까지, 사람과 일을 잇다.** 통합 HR 플랫폼 Linkple의 MVP입니다.
+> 코드잇 스프린트 · IT창업가 과정 **스프린트 미션 7**(백엔드 구현·배포) 제출물.
+> 미션 6의 프론트엔드 데모가 이번 미션에서 **실제 서버·DB를 가진 웹 서비스**가 되었습니다.
 
 | | |
 |---|---|
-| 🔗 **라이브 데모** | **https://linkple-mvp.vercel.app** |
+| 🔗 **라이브 데모 (미션 7 · 프론트+API)** | **https://linkple-mission7.vercel.app** |
+| 📄 **API 문서** | [`docs/API.md`](./docs/API.md) |
+| 🔗 미션 6 프론트엔드 MVP | https://linkple-mvp.vercel.app |
 | 🔗 미션 5 정적 랜딩 (디자인 원본) | https://linkple-landing.vercel.app |
 | 📄 기능 명세서 · 유저플로우 | [`docs/spec/`](./docs/spec/) (도식 SVG 원본 포함) |
 
 ---
 
-## 이번 미션에서 한 일
+## 이번 미션(7)에서 한 일 — 브라우저 저장소를 서버로 바꿨다
+
+미션 6까지 데이터는 사용자의 브라우저(localStorage) 안에만 있었습니다. 이번 미션에서
+**Express + Prisma + PostgreSQL 백엔드**를 만들어 같은 기능이 서버에 저장되게 했고,
+프론트와 백엔드를 **같은 오리진의 `/api`** 로 묶어 함께 배포했습니다.
+
+| 층 | 미션 6 | 미션 7 |
+|---|---|---|
+| 데이터 | localStorage (내 브라우저에만) | **PostgreSQL** (서버에, 모두에게) |
+| 인증 | 형식 검증뿐인 시뮬레이션 | **JWT** — bcrypt 해시 · 토큰 만료 · 보호 API |
+| API | 없음 (선택적 Mock) | **RESTful 13개 엔드포인트** ([`docs/API.md`](./docs/API.md)) |
+| 배포 | 정적 호스팅 | 정적 + **서버리스 함수** (동일 도메인) |
+
+화면 코드는 거의 그대로입니다 — 미션 6에서 데이터 접근을 `src/data/repository.js` 한 파일로
+모아 둔 덕분에, **API 전환에서 화면 20곳이 아니라 이 파일 하나를 바꿨습니다.**
+
+---
+
+## 미션 6에서 한 일
 
 미션 5에서 순수 HTML·CSS·JS로 만든 **정적 랜딩 페이지**를, 사용자가 직접 써볼 수 있는
 **React 기반 MVP**로 옮겼습니다. 보여주기 위한 화면에서 멈추지 않고, 공고를 올리고 찾고
@@ -68,11 +89,19 @@
 
 ## 기술 스택
 
+**프론트엔드**
+
 - **React 19** — 함수형 컴포넌트 · Hooks
 - **React Router 7** — SPA 라우팅, 중첩 라우트, 보호 라우트, URL 쿼리 동기화
-- **Vite 6** — 개발 서버 · 번들링
+- **Vite 6** — 개발 서버 · 번들링 (개발 프록시로 `/api` → 로컬 서버)
 - **CSS Modules + CSS 변수** — 미션 5의 Aurora Green 토큰을 그대로 승계
-- **JSON Server** — 선택적 Mock API (아래 참고)
+
+**백엔드 (미션 7)**
+
+- **Express 5** — RESTful API 서버. 로컬은 상주 프로세스, 배포는 서버리스 함수로 같은 앱을 띄웁니다
+- **Prisma + PostgreSQL** — 데이터 모델 4종 (User · Job · Application · WaitlistEntry)
+- **JWT (jsonwebtoken) + bcrypt** — 토큰 로그인 · 비밀번호 해시 · 보호 엔드포인트
+- **superstruct** — 요청 본문 검증 (서버는 클라이언트 검증을 신뢰하지 않습니다)
 
 상태 관리는 **`useState` · `useReducer` · `useMemo` · `useCallback` + Context** 만 사용했습니다.
 외부 상태 관리 라이브러리는 쓰지 않았습니다.
@@ -85,20 +114,18 @@
 
 ---
 
-## 데이터 계층 — localStorage와 Mock API 겸용
+## 데이터 계층 — 화면은 데이터가 어디서 오는지 모른다
 
-화면은 데이터가 어디서 오는지 모릅니다. `src/data/repository.js` 한 곳만 알고 있습니다.
+`src/data/repository.js` 한 곳만 API 주소를 압니다. 미션 6에서 localStorage와 Mock API를
+같은 인터페이스로 겸용하도록 만들어 둔 자리이고, **미션 7에서 실제 API로 갈아탈 때
+예고대로 이 파일 하나만 바꿨습니다.**
 
-| 모드 | 조건 | 동작 |
-|---|---|---|
-| **localStorage** (기본값) | `VITE_API_BASE_URL` 없음 | 첫 방문 시 Mock 데이터 10건을 심고, 이후 브라우저 저장소를 읽고 씁니다. **배포본이 이 모드**라 서버 없이 그대로 동작합니다. |
-| **Mock API** | `VITE_API_BASE_URL` 설정 | JSON Server(`db.json`)를 실제 REST API처럼 호출합니다. |
-
-두 구현이 같은 인터페이스(`loadAll` · `createJob` · `deleteJob` · `createApplication` · `deleteApplication`)를
-따르므로, **미션 7에서 실제 API로 갈아탈 때 바꿀 곳은 이 파일 하나**입니다.
-
-Mock API 모드는 서버가 꺼져 있으면 **에러 화면과 다시 시도 버튼**을 띄웁니다.
-`useEffect` 안에서 조용히 실패하지 않게 하려고 만든 경로입니다.
+- 기본값은 **같은 오리진의 `/api`** — 배포본은 별도 설정 없이 서버리스 API를 부릅니다
+- `VITE_API_BASE_URL` 로 주소를 바꿀 수 있습니다 (로컬 개발: `http://localhost:3001`)
+- 이 파일이 **서버의 모양을 화면이 쓰던 모양으로 번역**합니다 — 서버 응답이 바뀌어도
+  화면 20곳이 아니라 여기 한 곳을 고칩니다
+- 서버가 4xx/5xx와 함께 보내는 `message` 는 **사용자에게 그대로 보여줄 수 있는 문장**이라
+  토스트·에러 화면에 그대로 씁니다. 네트워크 단절은 별도의 문장으로 구분합니다
 
 ---
 
@@ -153,9 +180,19 @@ DOM 순서가 아니라 사용자가 할 일을 기준으로 삼았습니다.
 ## 폴더 구조
 
 ```
-├── db.json                   # JSON Server용 Mock DB (공고 10건, `npm run seed:db`로 재생성)
-├── .env.example              # Mock API 모드 설정 예시
-├── scripts/generate-db.mjs   # 시드 → db.json 생성 (시드 정본은 한 곳뿐)
+├── api/index.js              # ★ Vercel 서버리스 진입점 (/api 아래에 Express 앱을 마운트)
+├── server/                   # ★ 미션 7 백엔드
+│   ├── app.js                #   Express 앱 (미들웨어 순서 · 라우터 조립)
+│   ├── index.js              #   로컬 상주 서버 (listen)
+│   ├── middlewares.js        #   logger · attachUser · notFound · errorHandler
+│   ├── validate.js           #   superstruct 요청 검증
+│   ├── lib/                  #   jwt · prisma 클라이언트
+│   └── routes/               #   auth · jobs · applications · waitlist
+├── prisma/                   # ★ schema.prisma (모델 4종) · migrations · seed.js
+├── docs/API.md               # ★ API 문서 (엔드포인트 · 요청/응답 · 상태 코드)
+├── .env.example              # 로컬 환경 변수 예시 (.env는 커밋하지 않음)
+├── db.json                   # (미션 6 유물) JSON Server용 Mock DB
+├── scripts/generate-db.mjs   # 시드 → db.json 생성
 └── src/
     ├── main.jsx              # 진입점 · Provider 조립
     ├── App.jsx               # 라우트 정의
@@ -180,32 +217,29 @@ DOM 순서가 아니라 사용자가 할 일을 기준으로 삼았습니다.
 
 ## 로컬 실행
 
-```bash
-npm install
-npm run dev      # http://localhost:5173  (localStorage 모드)
-npm run build    # 프로덕션 빌드
-npm run preview  # 빌드 결과 확인
-npm run lint     # ESLint
-npm test         # Vitest (41개)
-```
-
-### Mock API 모드로 켜기
+PostgreSQL이 떠 있어야 합니다. `.env.example`을 `.env`로 복사해 값을 채웁니다.
 
 ```bash
-cp .env.example .env.local   # VITE_API_BASE_URL=http://localhost:3001
-npm run server               # 터미널 A — JSON Server (db.json)
-npm run dev                  # 터미널 B — 앱
+npm install                  # postinstall이 prisma generate까지 수행
+npm run db:migrate           # 스키마 적용 (prisma migrate dev)
+npm run db:seed              # 데모 계정 + 공고 10건 시드
+
+npm run api:dev              # 터미널 A — Express API (http://localhost:3001)
+npm run dev                  # 터미널 B — 앱 (http://localhost:5173, /api는 프록시)
+
+npm run build                # 프로덕션 빌드
+npm run lint                 # ESLint
+npm test                     # Vitest (44개)
 ```
 
-`.env.local`을 지우면 다시 localStorage 모드로 돌아갑니다.
+개발 서버의 `/api` 요청은 Vite 프록시가 로컬 Express로 넘깁니다 — **개발과 배포가
+같은 주소(`/api`)를 쓰므로 "로컬에선 됐는데"가 생기지 않습니다.**
 
 ### 데모 계정
 
-실제 인증은 하지 않습니다. **형식이 맞는 이메일 + 6자 이상 비밀번호**면 로그인됩니다.
-로그인 화면의 `데모 계정 채워 넣기` 버튼으로 `hr@linkple.kr / linkple123` 을 바로 넣을 수 있습니다.
-
-> 데이터를 처음 상태로 되돌리려면 브라우저 콘솔에서
-> `localStorage.clear()` 후 새로고침하세요.
+시드가 만드는 계정으로 바로 로그인할 수 있습니다. 로그인 화면의
+`데모 계정 채워 넣기` 버튼이 **`demo@linkple.kr / linkple2026`** 을 넣어 줍니다.
+`POST /auth/signup` 으로 새 계정을 만들 수도 있습니다 (비밀번호는 bcrypt 해시로 저장).
 
 ---
 
@@ -214,7 +248,7 @@ npm run dev                  # 터미널 B — 앱
 미션의 요구사항은 아니지만, 손으로 매번 확인할 수 없는 규칙은 테스트로 고정했습니다.
 
 ```bash
-npm test           # Vitest — 6개 파일 · 41개 테스트
+npm test           # Vitest — 6개 파일 · 44개 테스트
 npm run test:watch # 감시 모드
 ```
 
@@ -232,7 +266,30 @@ npm run test:watch # 감시 모드
 
 ---
 
-## 미션 요구사항 대응
+## 미션 7 요구사항 대응
+
+**기본 요구사항**
+
+| 항목 | 구현 |
+|---|---|
+| 백엔드 기능 범위 정의 (핵심 API 2~4개) | **4개 영역** — 인증(`/auth`) · 공고(`/jobs`) · 지원(`/applications`) · 사전 신청(`/waitlist`). 선별 기준은 [`docs/API.md`](./docs/API.md) 서두 참고 |
+| 서버 및 API 구현 (RESTful · 요청→처리→응답) | Express 5 · **13개 엔드포인트** · 자원 명사 + HTTP 메소드(GET/POST/DELETE) · 상태 코드 규약(200/201/204/400/401/403/404/409/500) |
+| 데이터 저장 구조 설계 | Prisma 스키마 — **User · Job · Application · WaitlistEntry** 4개 모델, 관계·유니크 제약(`@@unique(jobId, email)` 중복 지원 차단) 포함 |
+| 프론트엔드-백엔드 연동 (Mock 제거) | `repository.js` 가 실제 API 호출로 전환. 정상 응답은 화면 반영, 실패는 **서버의 message를 그대로 토스트·에러 화면에** 표시 + 다시 시도 |
+| 배포 | Vercel — 정적 프론트 + 서버리스 API를 **같은 도메인**에. 프론트는 `/api` 상대 주소만 사용 |
+
+**심화 요구사항**
+
+| 항목 | 구현 |
+|---|---|
+| JWT 인증 흐름 | `POST /auth/signup`(bcrypt 해시) · `POST /auth/login`(JWT 발급·만료 2h) · `GET /auth/me` · `requireAuth` 미들웨어로 보호 API 6개 |
+| 입력값 검증 · 에러 처리 | superstruct 스키마 검증 → 400 + 필드명, 도메인 규칙 위반은 401/403/404/409. 에러 응답은 항상 `{ message, field? }` 한 가지 모양 |
+| 환경 분리 | `.env`(로컬) / Vercel 환경변수(배포) · `.env.example` 제공 · `NODE_ENV` 분기 · 프록시로 개발/배포가 같은 `/api` 주소 사용 |
+| API 문서화 | [`docs/API.md`](./docs/API.md) — 전 엔드포인트의 요청/응답 예시 · 상태 코드 규약 · 데이터 모델 · 환경 변수 |
+
+---
+
+## 미션 6 요구사항 대응
 
 **기본 요구사항**
 
@@ -260,7 +317,7 @@ npm run test:watch # 감시 모드
 |---|---|
 | 에러 경계 | 렌더 예외 시 흰 화면 방지 · 원인 표시 · 복구 버튼 |
 | 화면별 문서 제목 | 8개 라우트가 탭에서 구분됨 |
-| 테스트 | Vitest 41개 (검증 규칙 · 데이터 계층 · 컴포넌트) |
+| 테스트 | Vitest 44개 (검증 규칙 · 데이터 계층 · 컴포넌트) |
 | 접근성 | 모달 포커스 트랩/초기 포커스, `aria-*` 연결, 키보드 탐색 |
 | 반응형 | 모바일 퍼스트 · 390px 가로 스크롤 0 |
 
@@ -269,5 +326,6 @@ npm run test:watch # 감시 모드
 ## 안내
 
 본 저장소와 페이지는 **학습 목적**이며 실제 상용 서비스가 아닙니다.
-회원가입·결제·채용 중개를 제공하지 않고, 화면에 보이는 기업·공고·지원자 정보는
-모두 학습용 가상 데이터입니다. 입력한 값은 서버로 전송되지 않고 사용자의 브라우저에만 저장됩니다.
+결제·채용 중개를 제공하지 않고, 화면에 보이는 기업·공고·지원자 정보는
+모두 학습용 가상 데이터입니다. 입력한 값은 **학습용 서버에 저장되며 언제든 초기화될 수
+있습니다** — 실제 개인정보를 입력하지 마세요.

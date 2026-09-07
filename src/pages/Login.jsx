@@ -11,7 +11,8 @@ import { useToast } from "../hooks/useToast";
 import styles from "./Login.module.css";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
-const DEMO = { email: "hr@linkple.kr", password: "linkple123" };
+// 시드(prisma/seed.js)가 만드는 계정과 반드시 같아야 한다. 다르면 데모 버튼이 401을 만든다.
+const DEMO = { email: "demo@linkple.kr", password: "linkple2026" };
 
 /**
  * 로그인 시뮬레이션 화면.
