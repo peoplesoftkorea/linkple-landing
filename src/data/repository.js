@@ -147,6 +147,24 @@ export const repository = {
   },
 };
 
+/**
+ * AI 공고문 초안 (미션 8). 단어 수준 입력 4가지를 보내면
+ * 폼에 채울 모양({ title, description, requirements[], benefits[], category, employmentType })이 온다.
+ * OpenAI 키는 서버에만 있다 — 브라우저는 이 경로만 안다.
+ */
+export const aiApi = {
+  draftJob: ({ role, location, conditions, highlights }) =>
+    request("/ai/draft", {
+      method: "POST",
+      body: JSON.stringify({
+        role,
+        location: location || undefined,
+        conditions: conditions || undefined,
+        highlights: highlights || undefined,
+      }),
+    }),
+};
+
 /** 로그인·회원가입도 같은 통로를 쓴다. */
 export const authApi = {
   login: (email, password) =>

@@ -26,9 +26,8 @@ export default function Footer() {
             </nav>
           </div>
           <p className={styles.disclaimer}>
-            코드잇 스프린트 · IT창업가 과정 <strong>스프린트 미션 6</strong> 제출용 프론트엔드
-            MVP입니다. 실제 채용 중개·회원가입·결제를 제공하지 않으며, 화면의 정보는 모두 학습용
-            가상 데이터입니다.
+            코드잇 스프린트 · IT창업가 과정 <strong>스프린트 미션 6~8</strong> 제출용 MVP입니다.
+            실제 채용 중개·결제를 제공하지 않으며, 화면의 정보는 모두 학습용 가상 데이터입니다.
           </p>
         </div>
       </Container>
