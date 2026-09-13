@@ -27,7 +27,10 @@ router.post('/draft', requireAuth, async (req, res) => {
     throw httpError(503, 'AI 초안 기능이 준비되지 않았습니다. 직접 작성해 주세요.');
   }
 
-  const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY, timeout: 20_000, maxRetries: 1 });
+  // 시간 예산 8초·자동 재시도 없음 — Vercel 서버리스 함수 제한(기본 10초) 안에서 끝나야
+  // 사용자가 '타임아웃'이 아니라 우리가 쓴 실패 문장을 본다. 실측 응답 1.3~2.1초라 여유 충분.
+  // 재시도는 사용자의 [초안 만들기] 재클릭이 맡는다.
+  const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY, timeout: 8_000, maxRetries: 0 });
 
   let response;
   try {
