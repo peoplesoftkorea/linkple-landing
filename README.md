@@ -6,7 +6,8 @@
 
 | | |
 |---|---|
-| 🔗 **라이브 데모 (프론트+API)** | **https://linkple-mission7.vercel.app** |
+| 🔗 **라이브 데모 (미션 8 · 프론트+API+AI)** | **https://linkple-mission8.vercel.app** |
+| 🔗 미션 7 클라이언트-서버 MVP | https://linkple-mission7.vercel.app |
 | 📄 **API 문서** | [`docs/API.md`](./docs/API.md) |
 | 📄 **미션 8 설계·흐름 정의** | [`docs/MISSION8-DESIGN.md`](./docs/MISSION8-DESIGN.md) |
 | 🔗 미션 6 프론트엔드 MVP | https://linkple-mvp.vercel.app |
