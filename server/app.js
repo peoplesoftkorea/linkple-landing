@@ -8,6 +8,7 @@ import authRouter from './routes/auth.js';
 import jobsRouter from './routes/jobs.js';
 import applicationsRouter from './routes/applications.js';
 import waitlistRouter from './routes/waitlist.js';
+import aiRouter from './routes/ai.js';
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use('/auth', authRouter);
 app.use('/jobs', jobsRouter);
 app.use('/applications', applicationsRouter);
 app.use('/waitlist', waitlistRouter);
+app.use('/ai', aiRouter);
 
 app.use(notFound);               // 4. 아무 라우트도 만나지 못한 요청
 app.use(errorHandler);           // 5. 모든 에러의 종착지

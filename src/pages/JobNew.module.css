@@ -21,6 +21,64 @@
   border-top: 1px solid var(--line);
 }
 
+/* ── AI 초안 패널 (미션 8) ─────────────────────────────── */
+
+.aiCard {
+  margin-bottom: var(--space-5);
+  border: 1px solid var(--brand-soft, var(--line));
+}
+
+.aiHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.aiTitle {
+  font-size: var(--fs-md);
+  font-weight: 700;
+}
+
+.aiDesc {
+  margin-top: var(--space-1);
+  font-size: var(--fs-sm);
+  color: var(--text-sub, #667);
+}
+
+.aiPanel {
+  display: grid;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--line);
+}
+
+.aiActions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.aiStatus {
+  font-size: var(--fs-sm);
+  color: var(--text-sub, #667);
+}
+
+.aiError {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--danger-soft);
+  border: 1px solid #f5c2c2;
+  color: var(--danger);
+  font-size: var(--fs-sm);
+}
+
 .summary {
   display: flex;
   align-items: flex-start;
