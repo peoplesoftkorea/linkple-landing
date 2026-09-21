@@ -1,0 +1,221 @@
+{
+  "jobs": [
+    {
+      "id": "job_seed_01",
+      "title": "HR 매니저 (채용·온보딩 총괄)",
+      "company": "그로우테크",
+      "location": "서울 강남구",
+      "category": "경영지원·인사",
+      "employmentType": "정규직",
+      "salary": 5200,
+      "description": "연 40명 규모 채용을 설계하고 실행합니다. 공고 기획부터 면접 운영, 입사 첫 90일 온보딩까지 사람이 들어와 자리를 잡는 전 과정을 책임집니다.",
+      "requirements": [
+        "HR 실무 3년 이상",
+        "채용 프로세스 설계 경험",
+        "ATS 운영 경험 우대"
+      ],
+      "benefits": [
+        "복지 포인트 연 120만원",
+        "유연 출퇴근",
+        "도서·교육비 무제한"
+      ],
+      "createdAt": "2026-08-20T03:26:24.436Z",
+      "source": "seed"
+    },
+    {
+      "id": "job_seed_02",
+      "title": "프론트엔드 개발자 (React)",
+      "company": "링플",
+      "location": "서울 마포구",
+      "category": "개발",
+      "employmentType": "정규직",
+      "salary": 6000,
+      "description": "채용과 복지를 하나로 잇는 HR 플랫폼의 화면을 만듭니다. React와 디자인 시스템으로 담당자가 매일 쓰는 도구의 사용성을 끌어올립니다.",
+      "requirements": [
+        "React 실무 2년 이상",
+        "상태 관리 이해",
+        "웹 접근성 관심"
+      ],
+      "benefits": [
+        "재택 주 2회",
+        "장비 자율 선택",
+        "복지몰 포인트"
+      ],
+      "createdAt": "2026-08-19T03:26:24.436Z",
+      "source": "seed"
+    },
+    {
+      "id": "job_seed_03",
+      "title": "프로덕트 디자이너",
+      "company": "블루밍랩",
+      "location": "경기 성남시 분당구",
+      "category": "디자인",
+      "employmentType": "정규직",
+      "salary": 4800,
+      "description": "B2B SaaS 제품의 흐름을 설계합니다. 리서치와 프로토타이핑을 거쳐, 복잡한 인사 업무를 몇 번의 클릭으로 줄이는 화면을 만듭니다.",
+      "requirements": [
+        "프로덕트 디자인 3년 이상",
+        "Figma 능숙",
+        "B2B 경험 우대"
+      ],
+      "benefits": [
+        "디자인 컨퍼런스 지원",
+        "점심 식대",
+        "리프레시 휴가"
+      ],
+      "createdAt": "2026-08-18T03:26:24.436Z",
+      "source": "seed"
+    },
+    {
+      "id": "job_seed_04",
+      "title": "콘텐츠 마케터 (HR 분야)",
+      "company": "피플소프트코리아",
+      "location": "서울 영등포구",
+      "category": "마케팅",
+      "employmentType": "정규직",
+      "salary": 4200,
+      "description": "인사 담당자가 실제로 읽는 글을 씁니다. 노무·채용·복지 주제를 뉴스레터와 블로그로 풀어 브랜드의 목소리를 만듭니다.",
+      "requirements": [
+        "콘텐츠 기획·작성 2년 이상",
+        "B2B 마케팅 이해"
+      ],
+      "benefits": [
+        "도서 구입비",
+        "재택 병행",
+        "복지 포인트"
+      ],
+      "createdAt": "2026-08-16T03:26:24.436Z",
+      "source": "seed"
+    },
+    {
+      "id": "job_seed_05",
+      "title": "기업 영업 담당 (중견기업 HR 솔루션)",
+      "company": "한빛솔루션",
+      "location": "서울 서초구",
+      "category": "영업",
+      "employmentType": "정규직",
+      "salary": 4500,
+      "description": "중견기업 인사팀을 만나 문제를 듣고 해법을 제안합니다. 계약 체결 이후 도입까지 고객과 끝까지 함께합니다.",
+      "requirements": [
+        "B2B 영업 2년 이상",
+        "제안서 작성 능숙",
+        "운전면허"
+      ],
+      "benefits": [
+        "인센티브 별도",
+        "차량 유지비",
+        "복지몰"
+      ],
+      "createdAt": "2026-08-15T03:26:24.436Z",
+      "source": "seed"
+    },
+    {
+      "id": "job_seed_06",
+      "title": "물류센터 운영 매니저",
+      "company": "대한로지스",
+      "location": "경기 이천시",
+      "category": "생산·물류",
+      "employmentType": "정규직",
+      "salary": 4000,
+      "description": "일 3만 건 출고 현장을 운영합니다. 인력 배치와 근태를 관리하고, 반복되는 병목을 데이터로 찾아 없앱니다.",
+      "requirements": [
+        "물류 현장 관리 3년 이상",
+        "엑셀 활용 능숙"
+      ],
+      "benefits": [
+        "기숙사 제공",
+        "명절 상여",
+        "건강검진"
+      ],
+      "createdAt": "2026-08-13T03:26:24.436Z",
+      "source": "seed"
+    },
+    {
+      "id": "job_seed_07",
+      "title": "고객지원 담당자 (CS)",
+      "company": "링플",
+      "location": "서울 마포구",
+      "category": "고객지원",
+      "employmentType": "계약직",
+      "salary": 3400,
+      "description": "플랫폼을 쓰는 인사 담당자의 문의에 답합니다. 반복 문의는 도움말과 자동화로 옮겨 다음 사람이 묻지 않게 만듭니다.",
+      "requirements": [
+        "CS 경험 1년 이상",
+        "문서 작성 능력"
+      ],
+      "benefits": [
+        "주 4.5일제",
+        "복지 포인트",
+        "정규직 전환 기회"
+      ],
+      "createdAt": "2026-08-12T03:26:24.436Z",
+      "source": "seed"
+    },
+    {
+      "id": "job_seed_08",
+      "title": "인사 데이터 분석 인턴",
+      "company": "그로우테크",
+      "location": "서울 강남구",
+      "category": "경영지원·인사",
+      "employmentType": "인턴",
+      "salary": 2400,
+      "description": "채용·근태·복지 데이터를 모아 지표로 만듭니다. 흩어진 숫자를 의사결정에 쓰이는 한 장의 대시보드로 정리합니다.",
+      "requirements": [
+        "SQL 기초",
+        "스프레드시트 활용",
+        "6개월 이상 근무 가능"
+      ],
+      "benefits": [
+        "멘토링",
+        "정규직 전환 검토",
+        "점심 제공"
+      ],
+      "createdAt": "2026-08-10T03:26:24.436Z",
+      "source": "seed"
+    },
+    {
+      "id": "job_seed_09",
+      "title": "백엔드 개발자 (Node.js)",
+      "company": "블루밍랩",
+      "location": "경기 성남시 분당구",
+      "category": "개발",
+      "employmentType": "정규직",
+      "salary": 6500,
+      "description": "채용·복지 데이터를 다루는 API를 설계하고 운영합니다. 트래픽이 늘어도 무너지지 않는 구조를 만드는 일입니다.",
+      "requirements": [
+        "Node.js 3년 이상",
+        "RDB 설계 경험",
+        "클라우드 운영 경험"
+      ],
+      "benefits": [
+        "스톡옵션",
+        "재택 자율",
+        "장비 지원"
+      ],
+      "createdAt": "2026-08-07T03:26:24.436Z",
+      "source": "seed"
+    },
+    {
+      "id": "job_seed_10",
+      "title": "총무·복지 운영 담당 (주 3일)",
+      "company": "한빛솔루션",
+      "location": "서울 서초구",
+      "category": "경영지원·인사",
+      "employmentType": "파트타임",
+      "salary": 0,
+      "description": "사무 공간과 복지 제도를 돌봅니다. 구성원이 불편을 말하기 전에 먼저 알아채는 일이 이 자리의 핵심입니다.",
+      "requirements": [
+        "총무 실무 1년 이상",
+        "주 3일 근무 가능"
+      ],
+      "benefits": [
+        "시간 협의 가능",
+        "복지 포인트",
+        "경조사 지원"
+      ],
+      "createdAt": "2026-08-03T03:26:24.436Z",
+      "source": "seed"
+    }
+  ],
+  "applications": []
+}

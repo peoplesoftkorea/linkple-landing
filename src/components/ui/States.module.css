@@ -1,0 +1,73 @@
+/* 로딩 · 빈 화면 · 에러 — 세 가지 '내용 없음' 상태를 한 벌로 관리한다. */
+
+.skeleton {
+  background: linear-gradient(90deg, #eef3f1 25%, #f7faf9 37%, #eef3f1 63%);
+  background-size: 400% 100%;
+  border-radius: var(--radius-sm);
+  animation: shimmer 1.3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 100% 50%;
+  }
+  to {
+    background-position: 0 50%;
+  }
+}
+
+.cardSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  text-align: center;
+  padding: var(--space-8) var(--space-5);
+  background: var(--bg-soft);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+}
+
+.icon {
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-full);
+  background: var(--white);
+  box-shadow: var(--shadow-sm);
+  font-size: 1.5rem;
+}
+
+.title {
+  font-size: var(--fs-lg);
+}
+
+.desc {
+  color: var(--ink-2);
+  font-size: var(--fs-sm);
+  max-width: 42ch;
+}
+
+.actions {
+  margin-top: var(--space-2);
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.errorState {
+  background: var(--danger-soft);
+  border-color: #f5c2c2;
+}

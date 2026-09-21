@@ -1,0 +1,69 @@
+.viewport {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  z-index: var(--z-toast);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: min(420px, calc(100vw - 32px));
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--ink);
+  color: #fff;
+  box-shadow: var(--shadow-md);
+  font-size: var(--fs-sm);
+  pointer-events: auto;
+  animation: slide 0.25s var(--ease);
+}
+
+.success .mark {
+  color: #63e6be;
+}
+.error {
+  background: #7a1010;
+}
+.error .mark {
+  color: #ffc9c9;
+}
+.info .mark {
+  color: #a5d8ff;
+}
+
+.mark {
+  flex-shrink: 0;
+  font-weight: 700;
+}
+
+.message {
+  flex: 1;
+}
+
+.close {
+  flex-shrink: 0;
+  background: transparent;
+  border: 0;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 6px;
+}
+
+.close:hover {
+  color: #fff;
+}
+
+@keyframes slide {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}

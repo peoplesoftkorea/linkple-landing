@@ -1,0 +1,159 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: saturate(180%) blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  height: var(--header-h);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: -0.03em;
+}
+
+.mark {
+  color: var(--brand);
+  display: inline-flex;
+}
+
+.ko {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--ink-3);
+  letter-spacing: 0;
+}
+
+.toggle {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 42px;
+  height: 42px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--white);
+  cursor: pointer;
+}
+
+.toggle span {
+  display: block;
+  height: 2px;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: transform var(--dur) var(--ease);
+}
+
+.menu {
+  display: none;
+}
+
+.menuOpen {
+  display: flex;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--header-h);
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  background: var(--white);
+  border-bottom: 1px solid var(--line);
+  box-shadow: var(--shadow-md);
+}
+
+.link {
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  transition:
+    color var(--dur) var(--ease),
+    background var(--dur) var(--ease);
+}
+
+.link:hover {
+  color: var(--brand-ink);
+  background: var(--bg-soft);
+}
+
+.active {
+  color: var(--brand-ink);
+  background: var(--brand-soft);
+}
+
+.authArea {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding-top: var(--space-3);
+  margin-top: var(--space-2);
+  border-top: 1px solid var(--line);
+}
+
+.who {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.35;
+  min-width: 0;
+}
+
+.whoName {
+  font-size: var(--fs-sm);
+  font-weight: 700;
+}
+
+.whoMail {
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (min-width: 900px) {
+  .toggle {
+    display: none;
+  }
+
+  .menu,
+  .menuOpen {
+    display: flex;
+    position: static;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-1);
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .authArea {
+    padding-top: 0;
+    margin-top: 0;
+    margin-left: var(--space-3);
+    padding-left: var(--space-4);
+    border-top: 0;
+    border-left: 1px solid var(--line);
+  }
+
+  .whoMail {
+    max-width: 160px;
+  }
+}

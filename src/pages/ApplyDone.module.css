@@ -1,0 +1,74 @@
+.wrap {
+  padding: var(--space-8) 0;
+}
+
+.card {
+  text-align: center;
+}
+
+.check {
+  width: 68px;
+  height: 68px;
+  margin: 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-full);
+  background: var(--brand-soft);
+  color: var(--brand);
+  animation: pop 0.4s var(--ease);
+}
+
+.title {
+  margin-top: var(--space-4);
+  font-size: var(--fs-2xl);
+}
+
+.desc {
+  margin-top: var(--space-3);
+  color: var(--ink-2);
+}
+
+.receipt {
+  margin-top: var(--space-5);
+  text-align: left;
+  padding: var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--bg-soft);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  font-size: var(--fs-sm);
+}
+
+.key {
+  color: var(--ink-3);
+  flex-shrink: 0;
+}
+
+.value {
+  font-weight: 600;
+  text-align: right;
+  word-break: break-all;
+}
+
+.actions {
+  margin-top: var(--space-5);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  justify-content: center;
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
