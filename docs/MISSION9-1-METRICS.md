@@ -1,7 +1,7 @@
 # 미션 9-1 — 지표 설계
 
 > 대상 서비스: **linkple 채용 공고 MVP**(미션 5~8 누적) · 배포본 https://linkple-mission8.vercel.app
-> 작성 2026-09-30 · 짝 문서 [Tracking Plan](./MISSION9-1-TRACKING-PLAN.md)
+> 작성 2026-09-30 · Amplitude 프로젝트 `linkple-mission9` · GA4 `G-8B4G6MFMPW` · 짝 문서 [Tracking Plan](./MISSION9-1-TRACKING-PLAN.md)
 
 ---
 

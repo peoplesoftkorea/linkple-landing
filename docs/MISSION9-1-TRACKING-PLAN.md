@@ -104,7 +104,10 @@
 | Amplitude 전송 | ✅ `POST api2.amplitude.com/2/httpapi` 발생 |
 | 발화 확인 이벤트 | `page_view` · `job_list_viewed` · `job_detail_viewed` · `apply_started` — 전부 `sinks=[amplitude]` |
 | 미확인(로그인 필요) | `login_*` · `apply_submitted` · `job_new_opened` · `ai_draft_*` · `job_posted` · `application_list_viewed` |
-| GA4 | ⏸측정 ID 주입 전 |
+| GA4 | ✅ `gtag/js?id=G-8B4G6MFMPW` 로드 + `google-analytics.com/g/collect` 전송 확인 |
+
+**최종 실측 [2026-09-30 · GA4 주입 후 재배포]** — 발화한 이벤트 전부가 `sinks=[amplitude,ga4]` 로
+**두 도구에 동시 전송**된다. Amplitude `POST /2/httpapi` 4건, GA4 `g/collect` 요청 확인.
 
 ★**「코드 대조 통과」를 「찍힌다」로 읽지 않는다.** 층 1(9항)은 이름과 자리가 맞는지를 보고,
 도구에 도착하는지는 층 2 만 답할 수 있다.
