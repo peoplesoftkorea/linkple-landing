@@ -88,6 +88,24 @@
 ⇒ **남은 확인은 배포본에서 한다**(같은 출처라 API 가 정상 작동한다). 순서 = 키 2종 주입 → 배포 →
 퍼널 1회 통과 → `window.__LOG_QA` 와 Amplitude Live Events · GA4 실시간을 **대조**하고 캡처한다.
 
+### 🔴배포본 실측에서 잡은 결함 1건 [2026-09-30]
+
+`job_list_viewed` 가 **영원히 찍히지 않는 상태**였다. 목록 상태값은 `loading | ready | error` 인데
+코드가 **존재하지 않는 `"success"`** 와 비교하고 있어 그 분기에 도달할 수 없었다.
+
+⛔**층 1(코드 대조)은 이것을 잡지 못한다** — 「호출부가 있는가」만 보기 때문이다. 호출은 있었고
+다만 닿지 않았다. **도달 불가능한 분기는 「행동이 없었다」와 똑같이 0을 준다.**
+⇒ 배포본에서 퍼널을 한 번 밟아 본 뒤에야 드러났다. 정정 후 재배포하여 발화를 확인했다.
+
+### 배포본 실측 결과 [2026-09-30 · Amplitude 키 주입 후]
+
+| 확인 | 결과 |
+|---|---|
+| Amplitude 전송 | ✅ `POST api2.amplitude.com/2/httpapi` 발생 |
+| 발화 확인 이벤트 | `page_view` · `job_list_viewed` · `job_detail_viewed` · `apply_started` — 전부 `sinks=[amplitude]` |
+| 미확인(로그인 필요) | `login_*` · `apply_submitted` · `job_new_opened` · `ai_draft_*` · `job_posted` · `application_list_viewed` |
+| GA4 | ⏸측정 ID 주입 전 |
+
 ★**「코드 대조 통과」를 「찍힌다」로 읽지 않는다.** 층 1(9항)은 이름과 자리가 맞는지를 보고,
 도구에 도착하는지는 층 2 만 답할 수 있다.
 

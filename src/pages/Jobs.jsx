@@ -47,7 +47,10 @@ export default function Jobs() {
   // 목록이 «실제로 보인» 시점에 한 번 — 로딩 실패는 조회가 아니다.
   const listLogged = useRef(false);
   useEffect(() => {
-    if (status !== "success" || listLogged.current) return;
+    // ⛔상태값은 loading · ready · error 다. 🔴첫 판은 존재하지 않는 "success" 와 비교해
+    //   이 이벤트가 영원히 찍히지 않았다[라이브 실측 2026-09-30에 발견].
+    //   코드 대조 검사는 「호출부가 있다」만 보므로 도달 불가능한 분기를 잡지 못한다.
+    if (status !== "ready" || listLogged.current) return;
     listLogged.current = true;
     track(EVENTS.JOB_LIST_VIEWED, { total: jobs.length });
   }, [status, jobs.length]);
