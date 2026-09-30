@@ -132,10 +132,16 @@
 | `job_search_used` | ✅ | ★`apply_submitted` | ✅ **구직자 Aha** |
 | `job_detail_viewed` | ✅ | `job_new_opened` | ✅ |
 | `login_started` | ✅ | ★`job_posted` | ✅ **구인자 Aha** |
-| `application_list_viewed` | ✅ | `ai_draft_requested` · `ai_draft_accepted` | ⏸미확인 |
+| `application_list_viewed` | ✅ | `ai_draft_requested` · `ai_draft_accepted` | ✅ |
 
-**13종 중 11종 발화 확인**(전부 `sinks=[amplitude,ga4]`). 남은 2종은 AI 초안 패널 경로로,
-코드 대조(층 1)는 통과했으나 화면에서 밟지 못했다 — **「호출부가 있다」까지만 참이다.**
+**13종 전부 발화 확인**(전부 `sinks=[amplitude,ga4]`). 마지막 2종(AI 초안)은 배포본에서 실제로
+초안을 생성해 Amplitude 라이브 이벤트로 확인했다 — 증빙 `docs/evidence/amplitude-live-events-20260930.png`.
+
+★같은 화면이 **사용자 식별도 함께 증명한다** — 로그인 전은 「익명 사용자」, 로그인 후는 사용자 ID 로
+바뀐다. 한 사람의 행동이 로그인 전후로 이어진다는 뜻이다.
+
+🔴**「고쳤다」와 「나갔다」는 다르다** — 그 화면의 `job_new_opened` 2건은 중복 차단을 **커밋만 하고
+배포하지 않은** 상태의 기록이다. 배포 후 해소. 커밋 로그를 보고 「고쳤다」고 판단하면 틀린다.
 
 🔴**이 과정에서 결함 1건 추가 발견** — `job_new_opened` 가 재마운트로 2건 찍혔다. 분모가 부풀면
 공고 게시율이 실제보다 낮게 보인다. `page_view` 와 같은 방식으로 차단했다.
