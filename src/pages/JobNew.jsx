@@ -47,7 +47,12 @@ export default function JobNew() {
   const usedAiRef = useRef(false);
 
   // 공고 작성 화면에 들어온 시점(구인자 퍼널의 1단계).
+  // ⛔재마운트로 두 번 찍히지 않게 막는다 — 분모가 부풀면 게시율이 실제보다 낮게 보인다
+  //   [실측 2026-09-30: 이중 마운트로 2건].
+  const openLogged = useRef(false);
   useEffect(() => {
+    if (openLogged.current) return;
+    openLogged.current = true;
     track(EVENTS.JOB_NEW_OPENED, {});
   }, []);
 
