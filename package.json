@@ -17,9 +17,11 @@
     "db:migrate": "prisma migrate dev",
     "db:seed": "node prisma/seed.js",
     "db:studio": "prisma studio",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "qa:tracking": "node scripts/qa-tracking.mjs"
   },
   "dependencies": {
+    "@amplitude/analytics-browser": "^2.47.2",
     "@prisma/client": "6.19.3",
     "bcryptjs": "^3.0.2",
     "dotenv": "^17.2.3",

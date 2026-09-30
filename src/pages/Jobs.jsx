@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import Container from "../components/layout/Container";
 import PageHeader from "../components/layout/PageHeader";
@@ -7,6 +7,7 @@ import { EmptyState, ErrorState, JobCardSkeleton } from "../components/ui/States
 import JobCard from "../components/job/JobCard";
 import JobFilters from "../components/job/JobFilters";
 import { useJobs } from "../hooks/useJobs";
+import { EVENTS, track } from "../lib/analytics";
 import { useAuth } from "../hooks/useAuth";
 import styles from "./Jobs.module.css";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
@@ -28,6 +29,13 @@ export default function Jobs() {
   };
 
   const handleChange = (next) => {
+    // ★검색·필터를 «썼다»는 사실만 남긴다. 검색어 원문은 싣지 않는다(무엇을 찾는지는 개인의 맥락이다).
+    track(EVENTS.JOB_SEARCH_USED, {
+      used_keyword: !!next.keyword,
+      category: next.category,
+      employment_type: next.employmentType,
+      sort: next.sort,
+    });
     const params = {};
     if (next.keyword) params.q = next.keyword;
     if (next.category !== DEFAULTS.category) params.category = next.category;
@@ -35,6 +43,14 @@ export default function Jobs() {
     if (next.sort !== DEFAULTS.sort) params.sort = next.sort;
     setSearchParams(params, { replace: true });
   };
+
+  // 목록이 «실제로 보인» 시점에 한 번 — 로딩 실패는 조회가 아니다.
+  const listLogged = useRef(false);
+  useEffect(() => {
+    if (status !== "success" || listLogged.current) return;
+    listLogged.current = true;
+    track(EVENTS.JOB_LIST_VIEWED, { total: jobs.length });
+  }, [status, jobs.length]);
 
   const visibleJobs = useMemo(() => {
     const keyword = filters.keyword.trim().toLowerCase();

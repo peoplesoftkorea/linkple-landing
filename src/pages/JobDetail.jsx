@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Container from "../components/layout/Container";
 import Card from "../components/ui/Card";
@@ -12,6 +12,7 @@ import { useAuth } from "../hooks/useAuth";
 import { useToast } from "../hooks/useToast";
 import { formatDate, formatSalary } from "../lib/format";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
+import { EVENTS, track } from "../lib/analytics";
 import styles from "./JobDetail.module.css";
 
 export default function JobDetail() {
@@ -28,6 +29,20 @@ export default function JobDetail() {
   // 훅은 조기 반환보다 앞에 있어야 하므로 공고 조회를 여기서 끝낸다.
   const job = getJobById(jobId);
   useDocumentTitle(job ? `${job.title} · ${job.company}` : "공고 상세");
+
+  // ★「상세를 열었다」는 공고가 «실제로 있을 때»만 성립한다 — 없는 id 로 들어온 것은 조회가 아니다.
+  //   훅이 조기 반환보다 앞이어야 해서 여기서 끝낸다(ref 로 중복 전송을 막는다).
+  const viewLogged = useRef(null);
+  useEffect(() => {
+    if (!job || viewLogged.current === job.id) return;
+    viewLogged.current = job.id;
+    track(EVENTS.JOB_DETAIL_VIEWED, {
+      job_id: job.id,
+      category: job.category,
+      employment_type: job.employmentType,
+      already_applied: hasAppliedTo ? !!hasAppliedTo(job.id) : null,
+    });
+  }, [job, hasAppliedTo]);
 
   if (status === "loading") {
     return (
@@ -72,6 +87,8 @@ export default function JobDetail() {
   const isOwner = job.source === "user" && (!job.createdBy || job.createdBy === user?.email);
 
   const handleApplyClick = () => {
+    // ★의도는 로그인 여부와 무관하게 남긴다 — 로그인 벽에서 얼마나 빠지는지가 퍼널의 관심사다.
+    track(EVENTS.APPLY_STARTED, { job_id: job.id, authenticated: isAuthenticated });
     if (!isAuthenticated) {
       // 로그인 후 이 공고로 되돌아오게 한다.
       push("지원하려면 먼저 로그인해 주세요.", "info");
@@ -84,6 +101,12 @@ export default function JobDetail() {
   // 저장에 실패하면 모달을 닫지 않는다. 실패를 성공처럼 보이게 하지 않기 위해서다.
   const handleApplySubmit = async (values) => {
     const application = await addApplication(job, values, user);
+    // ★구직자 Aha — 서버 저장이 «성공한 뒤»에만 보낸다. 버튼 클릭은 가치 수령이 아니다.
+    track(EVENTS.APPLY_SUBMITTED, {
+      job_id: job.id,
+      application_id: application.id,
+      category: job.category,
+    });
     setApplyOpen(false);
     push("지원서를 제출했습니다.", "success");
     navigate(`/applications/${application.id}/done`, { replace: true });
