@@ -9,6 +9,7 @@ import { hasErrors, validateLoginForm } from "../lib/validate";
 import { useAuth } from "../hooks/useAuth";
 import { useToast } from "../hooks/useToast";
 import styles from "./Login.module.css";
+import { EVENTS, identifyUser, track } from "../lib/analytics";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
 // 시드(prisma/seed.js)가 만드는 계정과 반드시 같아야 한다. 다르면 데모 버튼이 401을 만든다.
@@ -45,10 +46,15 @@ export default function Login() {
     event.preventDefault();
     const nextErrors = validateLoginForm(values);
     setErrors(nextErrors);
+    // ⛔검증 실패는 「시도」로 세지 않는다 — 폼이 막은 것은 사용자의 의도가 아니라 입력이다.
     if (hasErrors(nextErrors)) return;
+    track(EVENTS.LOGIN_STARTED, { method: "email", from });
 
     try {
       const user = await login(values);
+      // ★사람을 묶는다. ⛔이메일·이름은 싣지 않는다 — 식별자(id)와 역할만 올린다.
+      identifyUser(user);
+      track(EVENTS.LOGIN_COMPLETED, { method: "email", role: user.role ?? "seeker" });
       push(`${user.name} 반갑습니다.`, "success");
       navigate(from, { replace: true });
     } catch (err) {

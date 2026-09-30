@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Container from "../components/layout/Container";
 import PageHeader from "../components/layout/PageHeader";
@@ -8,6 +8,7 @@ import Field from "../components/ui/Field";
 import { Input, Select, Textarea } from "../components/ui/Input";
 import { CATEGORIES, EMPLOYMENT_TYPES } from "../data/constants";
 import { aiApi } from "../data/repository";
+import { EVENTS, track } from "../lib/analytics";
 import { hasErrors, validateJobForm } from "../lib/validate";
 import { useJobs } from "../hooks/useJobs";
 import { useAuth } from "../hooks/useAuth";
@@ -42,6 +43,18 @@ export default function JobNew() {
   const [touched, setTouched] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  // ★AI 초안을 «썼는지»를 등록 시점까지 들고 간다 — 미션 8 기능이 실제로 값을 냈는지 보는 축이다.
+  const usedAiRef = useRef(false);
+
+  // 공고 작성 화면에 들어온 시점(구인자 퍼널의 1단계).
+  // ⛔재마운트로 두 번 찍히지 않게 막는다 — 분모가 부풀면 게시율이 실제보다 낮게 보인다
+  //   [실측 2026-09-30: 이중 마운트로 2건].
+  const openLogged = useRef(false);
+  useEffect(() => {
+    if (openLogged.current) return;
+    openLogged.current = true;
+    track(EVENTS.JOB_NEW_OPENED, {});
+  }, []);
 
   // AI 초안 패널 (미션 8) — 실패해도 아래 수동 작성 경로는 그대로 살아 있다.
   const [aiOpen, setAiOpen] = useState(false);
@@ -63,6 +76,13 @@ export default function JobNew() {
 
     setAiLoading(true);
     setAiError("");
+    // ⛔입력 «내용»은 싣지 않는다 — 길이만 남겨도 「얼마나 적어야 초안이 잘 나오나」는 볼 수 있다.
+    track(EVENTS.AI_DRAFT_REQUESTED, {
+      role_len: role.length,
+      has_location: !!aiValues.location.trim(),
+      has_conditions: !!aiValues.conditions.trim(),
+      has_highlights: !!aiValues.highlights.trim(),
+    });
     try {
       const draft = await aiApi.draftJob({
         role,
@@ -84,6 +104,13 @@ export default function JobNew() {
       };
       setValues(next);
       setErrors(validateJobForm(next));
+      usedAiRef.current = true;
+      // ★「채택」 = 초안이 폼에 «실제로 들어간» 순간이다. 요청 성공(응답 도착)과 구별한다.
+      track(EVENTS.AI_DRAFT_ACCEPTED, {
+        title_len: (draft.title ?? "").length,
+        description_len: (draft.description ?? "").length,
+        requirements_count: (draft.requirements ?? []).length,
+      });
       push("AI 초안을 채웠습니다. 내용을 확인하고 고쳐서 등록해 주세요.", "success");
     } catch (error) {
       setAiError(error.message);
@@ -118,6 +145,13 @@ export default function JobNew() {
     setSubmitting(true);
     try {
       const job = await addJob(values, user);
+      // ★구인자 Aha — 서버 저장 성공 뒤. `used_ai` 로 AI 초안의 기여를 나눈다.
+      track(EVENTS.JOB_POSTED, {
+        job_id: job.id,
+        used_ai: usedAiRef.current,
+        category: values.category,
+        employment_type: values.employmentType,
+      });
       push("공고를 등록했습니다.", "success");
       navigate(`/jobs/${job.id}`, { replace: true });
     } catch (error) {

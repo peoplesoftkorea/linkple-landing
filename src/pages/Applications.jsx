@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Container from "../components/layout/Container";
 import PageHeader from "../components/layout/PageHeader";
@@ -8,6 +8,7 @@ import Button from "../components/ui/Button";
 import Modal from "../components/ui/Modal";
 import { EmptyState } from "../components/ui/States";
 import { useJobs } from "../hooks/useJobs";
+import { EVENTS, track } from "../lib/analytics";
 import { useAuth } from "../hooks/useAuth";
 import { useToast } from "../hooks/useToast";
 import { formatDate } from "../lib/format";
@@ -29,6 +30,14 @@ export default function Applications() {
         .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
     [applications, user.email],
   );
+
+  // 내 지원 내역을 «본» 시점 — 재방문 여부를 읽는 자리다(Retention 의 기초).
+  const listLogged = useRef(false);
+  useEffect(() => {
+    if (listLogged.current) return;
+    listLogged.current = true;
+    track(EVENTS.APPLICATION_LIST_VIEWED, { total: mine.length });
+  }, [mine.length]);
 
   const handleWithdraw = async () => {
     setWithdrawing(true);
